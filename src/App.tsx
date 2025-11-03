@@ -3,6 +3,7 @@ import MainPage from "./components/MainPage";
 import { Routes } from "react-router-dom";
 import { Route } from "react-router-dom";
 import Layout from "./components/Layout/Layout";
+import NotFound from "./components/NotFound";
 
 function App() {
   const welcoms = ["Zentra", "Focus App", "Pomodoro Timer"];
@@ -20,6 +21,7 @@ function App() {
       <Routes>
         <Route element={<Layout />}>
           <Route path="/" index element={<MainPage welcome={welcome} />} />
+          <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
     </>
