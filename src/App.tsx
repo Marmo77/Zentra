@@ -6,17 +6,30 @@ import Layout from "./components/Layout/Layout";
 import NotFound from "./components/NotFound";
 
 function App() {
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    const stored = localStorage.getItem("isDarkMode");
+    // If no value in localStorage, default to true (dark mode)
+    return stored === null ? true : stored === "true";
+  });
 
   useEffect(() => {
-    // Check system preference or localStorage on mount
-    const isDark = document.documentElement.classList.contains("dark");
-    setIsDarkMode(isDark);
-  }, []);
+    // Apply the dark class based on the state
+    if (isDarkMode) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+
+    // Save to localStorage if it's the first visit
+    if (localStorage.getItem("isDarkMode") === null) {
+      localStorage.setItem("isDarkMode", "true");
+    }
+  }, [isDarkMode]);
 
   const handleThemeToggle = () => {
-    setIsDarkMode(!isDarkMode);
-    document.documentElement.classList.toggle("dark");
+    const newMode = !isDarkMode;
+    setIsDarkMode(newMode);
+    localStorage.setItem("isDarkMode", newMode.toString());
   };
 
   return (
