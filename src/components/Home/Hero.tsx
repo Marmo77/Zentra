@@ -78,7 +78,7 @@ const Hero = () => {
           <Button
             size="lg"
             variant="outline"
-            className="border-border relative text-primary hover:border-border px-8 py-3 rounded-lg font-medium transition-all max-md:px-12 max-md:py-5 group"
+            className="border-border relative text-accent-foreground hover:border-border px-8 py-3 rounded-lg font-medium transition-all max-md:px-12 max-md:py-5 group"
           >
             Learn More
           </Button>
@@ -102,7 +102,7 @@ const Hero = () => {
         {/* Arrow Down indicator */}
       </div>
       <div>
-        <div className="mb- animate-smooth-bounce">
+        <div className="mb-8 animate-smooth-bounce">
           <ArrowDown />
         </div>
       </div>

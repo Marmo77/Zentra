@@ -206,6 +206,7 @@
 
 body {
   @apply dark:bg-background dark:text-foreground;
+  scroll-behavior: smooth;
 }
 
 @keyframes smooth-bounce {
