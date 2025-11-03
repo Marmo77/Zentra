@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { Button } from "./components/ui/button";
 import MainPage from "./components/MainPage";
+import { Routes } from "react-router-dom";
+import { Route } from "react-router-dom";
 
 function App() {
   const welcoms = ["Zentra", "Focus App", "Pomodoro Timer"];
@@ -15,9 +16,9 @@ function App() {
   }, 2000);
   return (
     <>
-      <div className="flex flex-col items-center justify-center h-screen">
-        <MainPage />
-      </div>
+      <Routes>
+        <Route path="/" index element={<MainPage />} />
+      </Routes>
     </>
   );
 }
