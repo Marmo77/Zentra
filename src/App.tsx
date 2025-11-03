@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Button } from "./components/ui/button";
+import MainPage from "./components/MainPage";
 
 function App() {
   const welcoms = ["Zentra", "Focus App", "Pomodoro Timer"];
@@ -15,18 +16,7 @@ function App() {
   return (
     <>
       <div className="flex flex-col items-center justify-center h-screen">
-        <h1 className="text-center text-xl">
-          Welcome to <span className="text-primary">{welcome}</span>
-        </h1>
-        <Button
-          variant={"outline"}
-          className="hover:scale-105 transition-all duration-300 cursor-pointer mt-4"
-          onClick={() => {
-            alert("Welcome to " + welcome);
-          }}
-        >
-          Welcome!
-        </Button>
+        <MainPage />
       </div>
     </>
   );
