@@ -1,5 +1,5 @@
 import { useState } from "react";
-import MainPage from "./components/MainPage";
+import Home from "./components/Home";
 import { Routes } from "react-router-dom";
 import { Route } from "react-router-dom";
 import Layout from "./components/Layout/Layout";
@@ -20,7 +20,7 @@ function App() {
     <>
       <Routes>
         <Route element={<Layout />}>
-          <Route path="/" index element={<MainPage welcome={welcome} />} />
+          <Route path="/" index element={<Home welcome={welcome} />} />
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
