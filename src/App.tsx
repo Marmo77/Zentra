@@ -1,33 +1,49 @@
-import { useState } from "react";
-import { Button } from "./components/ui/button";
+import { useState, useEffect } from "react";
+import Home from "./components/Home";
+import { Routes } from "react-router-dom";
+import { Route } from "react-router-dom";
+import Layout from "./components/Layout/Layout";
+import NotFound from "./components/NotFound";
 
 function App() {
-  const welcoms = ["Zentra", "Focus App", "Pomodoro Timer"];
-  const [welcome, setWelcome] = useState(welcoms[0]);
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    const stored = localStorage.getItem("isDarkMode");
+    // If no value in localStorage, default to true (dark mode)
+    return stored === null ? true : stored === "true";
+  });
 
-  setTimeout(() => {
-    let index = welcoms.indexOf(welcome);
-    setWelcome(welcoms[index + 1]);
-    if (index === welcoms.length - 1) {
-      setWelcome(welcoms[0]);
+  useEffect(() => {
+    // Apply the dark class based on the state
+    if (isDarkMode) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
     }
-  }, 2000);
+
+    // Save to localStorage if it's the first visit
+    if (localStorage.getItem("isDarkMode") === null) {
+      localStorage.setItem("isDarkMode", "true");
+    }
+  }, [isDarkMode]);
+
+  const handleThemeToggle = () => {
+    const newMode = !isDarkMode;
+    setIsDarkMode(newMode);
+    localStorage.setItem("isDarkMode", newMode.toString());
+  };
+
   return (
     <>
-      <div className="flex flex-col items-center justify-center h-screen">
-        <h1 className="text-center text-xl">
-          Welcome to <span className="text-primary">{welcome}</span>
-        </h1>
-        <Button
-          variant={"outline"}
-          className="hover:scale-105 transition-all duration-300 cursor-pointer mt-4"
-          onClick={() => {
-            alert("Welcome to " + welcome);
-          }}
+      <Routes>
+        <Route
+          element={
+            <Layout isDarkMode={isDarkMode} onThemeToggle={handleThemeToggle} />
+          }
         >
-          Welcome!
-        </Button>
-      </div>
+          <Route path="/" index element={<Home />} />
+          <Route path="*" element={<NotFound />} />
+        </Route>
+      </Routes>
     </>
   );
 }
