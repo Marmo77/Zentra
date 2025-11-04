@@ -41,6 +41,7 @@ function App() {
           }
         >
           <Route path="/" index element={<Home />} />
+          {/* <Route path="/app" element={}/> */}
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>

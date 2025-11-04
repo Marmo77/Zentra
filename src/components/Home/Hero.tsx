@@ -1,9 +1,16 @@
-import React, { useEffect, useMemo, useState } from "react";
+import { motion } from "motion/react";
 import { Button } from "../ui/button";
-import { ArrowDown, ArrowRight, Circle, Sparkles } from "lucide-react";
+import { ArrowDown, ArrowRight } from "lucide-react";
+import { ImageWithFallback } from "../fallback/ImageWithFallback";
 import RotatingText from "../ui/reactbits/RotatingText";
-import { AnimatePresence, motion } from "motion/react";
-const Hero = () => {
+import { useMemo } from "react";
+
+interface HeroSectionProps {
+  onStartFocusing: () => void;
+  onLearnMore: () => void;
+}
+
+function Hero({ onStartFocusing, onLearnMore }: HeroSectionProps) {
   const rotatingTexts = [
     "Achieve More.",
     "Focus Better.",
@@ -15,155 +22,125 @@ const Hero = () => {
   const maxTextLength = useMemo(() => {
     return Math.max(...rotatingTexts.map((t) => t.length));
   }, [rotatingTexts]);
-
   return (
-    <section className="min-h-screen flex flex-col items-center justify-between px-6 pt-20 bg-background">
-      <div className="max-w-4xl flex-1 justify-center mx-auto text-center flex flex-col gap-2">
-        {/* Simple Circle Icon */}
-        <div className="flex justify-center mb-12">
-          <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center group hover:scale-110 transition-all duration-500">
-            {/* <Circle className="w-8 h-8 text-primary" /> */}
-            <img
-              src="/web-icon.svg"
-              alt="meditation-person"
-              className="w-8 h-8 group-hover:scale-125 transition-all duration-300"
-            />
-          </div>
-        </div>
+    <section
+      className="relative min-h-screen flex items-center justify-center px-4 pt-20 overflow-hidden"
+      id="home"
+    >
+      {/* Background Image with Blur */}
+      <div className="absolute inset-0 z-0">
+        <ImageWithFallback
+          src="https://images.unsplash.com/photo-1658317708709-f9ff73f45617?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxuaWdodCUyMHJhaW4lMjBjaXR5JTIwYmx1cnxlbnwxfHx8fDE3NjIyOTEzOTN8MA&ixlib=rb-4.1.0&q=80&w=1080"
+          alt="Background"
+          className="w-full h-full object-cover opacity-20 blur-2xl scale-110"
+        />
+        <div className="absolute inset-0 bg-linear-to-b from-background/80 via-background/30 to-background"></div>
+      </div>
 
-        {/* Heading with Rotating Text */}
+      {/* Content */}
+      <div className="relative z-10 text-center max-w-4xl mx-auto">
+        {/* HEADLINE */}
         <div className="mb-8">
           <h1 className="text-5xl sm:text-6xl lg:text-7xl font-light tracking-tight leading-tight">
-            <span className="block mb-2 text-foreground">Stay Focused.</span>
-            <RotatingText
-              texts={rotatingTexts}
-              className="text-primary font-medium"
-              rotationInterval={3500}
-              animatePresenceMode="wait"
-              staggerDuration={0.025}
-              initial={{ y: 20, opacity: 0, filter: "blur(8px)" }}
-              animate={{ y: 0, opacity: 1, filter: "blur(0px)" }}
-              exit={{ y: -20, opacity: 0, filter: "blur(8px)" }}
-              transition={{
-                type: "spring",
-                damping: 30,
-                stiffness: 200,
-              }}
-              style={{
-                minWidth: `${maxTextLength * 0.55}em`,
-                display: "flex",
-                justifyContent: "center",
-              }}
-            />
+            <motion.span
+              className="block mb-2 text-transparent bg-clip-text bg-linear-to-br from-foreground to-primary"
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1, ease: "easeOut" }}
+            >
+              Stay Focused.
+            </motion.span>
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4, duration: 1, ease: "easeOut" }}
+            >
+              <RotatingText
+                texts={rotatingTexts}
+                className="text-primary font-medium"
+                rotationInterval={3500}
+                animatePresenceMode="wait"
+                staggerDuration={0.025}
+                initial={{ y: 20, opacity: 0, filter: "blur(8px)" }}
+                animate={{ y: 0, opacity: 1, filter: "blur(0px)" }}
+                exit={{ y: -20, opacity: 0, filter: "blur(8px)" }}
+                transition={{
+                  type: "spring",
+                  damping: 30,
+                  stiffness: 200,
+                }}
+                style={{
+                  minWidth: `${maxTextLength * 0.55}em`,
+                  display: "flex",
+                  justifyContent: "center",
+                }}
+              />
+            </motion.div>
           </h1>
         </div>
+        {/* <motion.h1
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: -10 }}
+          transition={{ delay: 0.2, duration: 0.9 }}
+          className="text-5xl md:text-6xl lg:text-7xl tracking-tight bg-linear-to-br from-foreground via-foreground to-accent bg-clip-text text-transparent"
+        >
+          Enter your space of clarity.
+        </motion.h1> */}
 
-        {/* Subtitle */}
-        <p className="text-muted-foreground text-lg sm:text-xl max-w-2xl mx-auto mb-12 font-light leading-relaxed">
-          A minimalist focus timer designed to help you stay in flow and boost
-          productivity through mindful work sessions.
-        </p>
+        {/* Subheading */}
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 10 }}
+          transition={{ delay: 0.4, duration: 0.9 }}
+          className="text-lg md:text-xl max-sm:px-4 mb-12 max-w-2xl mx-auto" // text-muted-foreground
+        >
+          A minimalist environment designed for deep work and undistracted
+          focus.
+        </motion.p>
 
         {/* CTA Buttons */}
-        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.6, duration: 0.9 }}
+          className="flex flex-col sm:flex-row items-center justify-center gap-4"
+        >
           <Button
+            onClick={onStartFocusing}
             size="lg"
-            variant="default"
-            className="px-8 py-4 max-md:px-12 max-md:py-5 group"
+            className="rounded-full px-10 py-7 text-lg bg-accent text-black hover:bg-accent/90 hover:scale-[1.02] transition-all duration-300 shadow-lg shadow-primary/20 group min-w-[200px]"
           >
-            Start Focusing
-            <ArrowRight className="w-2 h-2 group-hover:translate-x-1 transition-all duration-300 " />
+            Go to App
+            <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
           </Button>
-
           <Button
-            size="lg"
+            onClick={onLearnMore}
             variant="outline"
-            className="border-border relative text-accent-foreground hover:border-border px-8 py-3 rounded-lg font-medium transition-all max-md:px-12 max-md:py-5 group"
+            size="lg"
+            className="rounded-full px-10 py-7 text-lg border-accent/30 hover:text-accent/80 hover:border-accent/60 hover:bg-card/5 transition-all duration-300 min-w-[200px]"
           >
             Learn More
           </Button>
-          {/* <Button
-            size="lg"
-            className="group relative px-8 py-6 text-lg font-medium overflow-hidden
-                       bg-gradient-to-r from-primary to-primary/80 
-                       hover:shadow-xl hover:shadow-primary/30 hover:scale-105
-                       transition-all duration-300"
-          >
-            <span className="relative z-10 flex items-center gap-2">
-              Start Focusing
-              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
-            </span>
-            <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/20 to-transparent" />
-          </Button> */}
-        </div>
-        <div className="mt-20">
-          <Quotes />
-        </div>
-        {/* Arrow Down indicator */}
+        </motion.div>
       </div>
-      <div>
-        <div className="mb-8 animate-smooth-bounce">
-          <ArrowDown />
-        </div>
-      </div>
+      <motion.div
+        initial={{ opacity: 0, y: -60 }}
+        animate={{
+          opacity: 1,
+          y: 5,
+        }}
+        transition={{
+          delay: 0.6,
+          duration: 0.5,
+        }}
+        className="absolute bottom-6"
+        style={{
+          animation: "smooth-bounce 2s ease-in-out 1.1s infinite", // starts after motion completes (0.2 + 0.9 = 1.1s)
+        }}
+      >
+        <ArrowDown />
+      </motion.div>
     </section>
   );
-};
-
-const Quotes = () => {
-  const motivationalQuotes: string[] = [
-    "Discipline is choosing between what you want now and what you want most.",
-    "Focus is the art of knowing what to ignore.",
-    "The successful warrior is the average man, with laser-like focus.",
-    "Concentrate all your thoughts upon the work in hand. The sun's rays do not burn until brought to a focus.",
-    "Where focus goes, energy flows.",
-    "One reason so few of us achieve what we truly want is that we never direct our focus.",
-    "Your life is controlled by what you focus on.",
-    "It's not the daily increase but daily decrease. Hack away at the unessential.",
-    "The key to success is to focus our conscious mind on things we desire, not things we fear.",
-    "When walking, walk. When eating, eat.",
-    "Success demands singleness of purpose.",
-    "Energy flows where attention goes—guard it wisely.",
-    "Focus on being productive instead of busy.",
-    "You can’t depend on your eyes when your imagination is out of focus.",
-    "The more you focus, the more clear your path becomes.",
-    "Small daily improvements over time lead to stunning results.",
-    "Eliminate distractions, and watch your potential unfold.",
-    "Clarity about your priorities drives unstoppable momentum.",
-    "Mastery is achieved through consistent, focused practice.",
-    "Your future is created by what you do today, not tomorrow.",
-  ];
-
-  const [currentQuote, setCurrentQuote] = useState<number>(
-    Math.floor(Math.random() * motivationalQuotes.length)
-  );
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentQuote((prev) => (prev + 1) % motivationalQuotes.length);
-    }, 5000);
-
-    return () => clearInterval(interval);
-  }, []);
-
-  return (
-    <div className="py-12 px-4">
-      <div className="max-w-3xl mx-auto h-24 flex items-center justify-center">
-        <AnimatePresence mode="wait">
-          <motion.p
-            key={currentQuote}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0.2 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.8 }}
-            className="text-center italic text-muted-foreground  md:text-lg"
-          >
-            {motivationalQuotes[currentQuote]}
-          </motion.p>
-        </AnimatePresence>
-      </div>
-    </div>
-  );
-};
-
+}
 export default Hero;

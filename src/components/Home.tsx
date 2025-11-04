@@ -1,9 +1,11 @@
+import About from "./Home/About";
 import Hero from "./Home/Hero";
 
 const Home = () => {
   return (
-    <section className="max-w-6xl gap-8 mx-auto flex flex-col justify-center items-center">
-      <Hero />
+    <section className="flex-1 flex flex-col">
+      <Hero onStartFocusing={() => {}} onLearnMore={() => {}} />
+      <About />
     </section>
   );
 };

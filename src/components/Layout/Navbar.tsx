@@ -1,4 +1,3 @@
-import React from "react";
 import { Button } from "../ui/button";
 import { Sun, Moon } from "lucide-react";
 import { AppConstants } from "@/data/constants";
@@ -9,20 +8,27 @@ interface NavbarProps {
 }
 
 const Navbar = ({ isDarkMode, onThemeToggle }: NavbarProps) => {
+  const handleNavigate = (section: string) => {
+    const element = document.getElementById(section);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" });
+    }
+  };
   const navItems = [
-    { label: "Features", href: "#features" },
-    { label: "How It Works", href: "#how-it-works" },
+    { label: "Home", href: "#home" },
     { label: "About", href: "#about" },
+    { label: "How It Works", href: "#how-it-works" },
+    { label: "Features", href: "#features" },
   ];
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-background/70 backdrop-blur-md border-b border-border/40">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-background/70 backdrop-blur-md border-b border-border/40 shadow-xs">
       <div className="container mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
           <a
-            href="#home"
-            className="text-xl font-medium tracking-tight text-foreground hover:text-primary transition-colors"
+            onClick={() => handleNavigate("home")}
+            className="text-xl font-medium tracking-tight cursor-pointer text-transparent bg-clip-text bg-linear-to-br from-accent to-primary hover:to-accent hover:from-primary transition-colors duration-300 ease-in-out"
           >
             {AppConstants.Website.Title}
           </a>
@@ -32,8 +38,8 @@ const Navbar = ({ isDarkMode, onThemeToggle }: NavbarProps) => {
             {navItems.map((item) => (
               <a
                 key={item.label}
-                href={item.href}
-                className="text-sm font-light text-muted-foreground hover:text-foreground transition-colors"
+                onClick={() => handleNavigate(item.href.replace("#", ""))}
+                className="text-sm font-light text-muted-foreground cursor-pointer hover:text-foreground duration-300 ease-in-out transition-colors"
               >
                 {item.label}
               </a>
