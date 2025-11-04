@@ -17,7 +17,7 @@ const Footer = () => {
   ];
 
   return (
-    <div className="w-full h-20 text-center bg-background/20 border-t border-footer-line flex items-end">
+    <div className="w-full h-20 text-center bg-background/20 border-t border-border/40 flex items-end">
       {/* <span className="max-w-6xl">Footer</span> */}
       <div className="container mx-auto px-10 py-2">
         <div className="flex flex-col items-center gap-3 justify-center">

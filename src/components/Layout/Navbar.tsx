@@ -1,4 +1,3 @@
-import React from "react";
 import { Button } from "../ui/button";
 import { Sun, Moon } from "lucide-react";
 import { AppConstants } from "@/data/constants";
@@ -23,7 +22,7 @@ const Navbar = ({ isDarkMode, onThemeToggle }: NavbarProps) => {
   ];
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-background/70 backdrop-blur-md border-b border-border/40">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-background/70 backdrop-blur-md border-b border-border/40 shadow-xs">
       <div className="container mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
