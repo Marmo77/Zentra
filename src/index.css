@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
 
 @import "tailwindcss";
 @import "tw-animate-css";
@@ -7,6 +8,8 @@
 
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
+  --font-roboto: Roboto, sans-serif;
+  --font-montserrat: Montserrat, sans-serif;
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
@@ -208,6 +211,13 @@ body {
   @apply dark:bg-background dark:text-foreground;
   scroll-behavior: smooth;
 
+}
+
+h1,h2,h3,h4,h5,h6{
+  @apply font-roboto;
+}
+p{
+  @apply font-montserrat
 }
 
 @keyframes smooth-bounce {

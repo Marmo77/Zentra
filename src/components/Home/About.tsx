@@ -49,7 +49,7 @@ const About = () => {
             </span>
             ?
           </h2>
-          <p className="max-w-3xl text-lg max-sm:text-base md:text-xl text-center text-foreground">
+          <p className="max-w-3xl text-sm max-sm:text-base md:text-base text-center text-muted-foreground">
             A minimalistic focus app for deep work. Calm design, ambient
             backgrounds, and a functionalites to help you achieve flow and be
             less distracted.
@@ -78,7 +78,7 @@ const Feature = ({ icon, title, description }: Feature) => {
             </div>
           </div>
           <div className="flex-1">
-            <h3 className="text-xl mb-2">{title}</h3>
+            <h3 className="text-xl font-semibold mb-2">{title}</h3>
             <p className="text-muted-foreground leading-relaxed">
               {description}
             </p>

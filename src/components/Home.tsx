@@ -1,4 +1,5 @@
 import About from "./Home/About";
+import Features from "./Home/Features";
 import Hero from "./Home/Hero";
 
 const Home = () => {
@@ -6,6 +7,7 @@ const Home = () => {
     <section className="flex-1 flex flex-col">
       <Hero onStartFocusing={() => {}} onLearnMore={() => {}} />
       <About />
+      <Features />
     </section>
   );
 };
