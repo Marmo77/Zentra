@@ -8,6 +8,7 @@ import type { TaskProps } from "@/types/types";
 import { motion } from "motion/react";
 import { Toaster, toast } from "sonner";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
+import { Checkbox } from "../ui/checkbox";
 
 const Tasks = () => {
   const [tasks, setTasks] = useState<TaskProps[]>([]);
@@ -84,6 +85,14 @@ const Tasks = () => {
       isCompleted: false,
     });
   };
+
+  const handleCheck = (id: number) => {
+    setTasks((prev) =>
+      prev.map((task) =>
+        task.id === id ? { ...task, isCompleted: !task.isCompleted } : task
+      )
+    );
+  };
   return (
     <Card className="border-border rounded-2xl bg-card/20 h-fit">
       <CardContent className="px-6 flex flex-col gap-6">
@@ -114,7 +123,7 @@ const Tasks = () => {
         ) : (
           <div className="flex flex-col gap-2">
             {tasks.map((task) => (
-              <Task task={task} />
+              <Task task={task} handleCheck={handleCheck} />
             ))}
           </div>
         )}
@@ -123,14 +132,24 @@ const Tasks = () => {
   );
 };
 
-const Task = ({ task }: { task: TaskProps }) => {
+const Task = ({
+  task,
+  handleCheck,
+}: {
+  task: TaskProps;
+  handleCheck: (id: number) => void;
+}) => {
   return (
     <motion.div
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
       key={task.id}
-      className="flex items-center justify-between rounded-2xl text-wrap hover:bg-accent/10 duration-300 transition-colors border-border/40 border px-4 py-2"
+      className={`flex items-center justify-between rounded-2xl text-wrap duration-300 transition-colors border-border/40 border px-4 py-2 ${
+        task.isCompleted
+          ? "line-through opacity-50 bg-accent/20 hover:bg-accent/20"
+          : "hover:bg-primary/10"
+      }`}
     >
       <Tooltip>
         <TooltipTrigger asChild>
@@ -142,9 +161,13 @@ const Task = ({ task }: { task: TaskProps }) => {
           <p>{task.task}</p>
         </TooltipContent>
       </Tooltip>
-      <Button variant="outline">
-        <ArrowUpRightIcon />
-      </Button>
+      {/* <Button variant="outline"> */}
+      <Checkbox
+        className="w-5 h-5 bg-primary"
+        checked={task.isCompleted}
+        onCheckedChange={() => handleCheck(task.id)}
+      />
+      {/* </Button> */}
     </motion.div>
   );
 };
