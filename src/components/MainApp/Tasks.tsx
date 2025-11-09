@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Card, CardContent } from "../ui/card";
 
-import { ArrowUpRightIcon, Plus } from "lucide-react";
+import { ArrowUpRightIcon, Plus, X } from "lucide-react";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import type { TaskProps } from "@/types/types";
@@ -145,11 +145,11 @@ const Task = ({
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
       key={task.id}
-      className={`flex items-center justify-between rounded-2xl text-wrap duration-300 transition-colors border-border/40 border px-4 py-2 ${
+      className={`flex relative items-center justify-between rounded-2xl text-wrap duration-300 transition-colors border-border/40 border px-4 py-2 ${
         task.isCompleted
           ? "line-through opacity-50 bg-accent/20 hover:bg-accent/20"
           : "hover:bg-primary/10"
-      }`}
+      } group`}
     >
       <Tooltip>
         <TooltipTrigger asChild>
@@ -161,12 +161,21 @@ const Task = ({
           <p>{task.task}</p>
         </TooltipContent>
       </Tooltip>
-      {/* <Button variant="outline"> */}
-      <Checkbox
-        className="w-5 h-5 bg-primary"
-        checked={task.isCompleted}
-        onCheckedChange={() => handleCheck(task.id)}
-      />
+      <div className="flex items-center gap-2">
+        <Button
+          variant="ghost"
+          size="icon"
+          //   onClick={() => deleteTask(task.id)}
+          className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-400"
+        >
+          <X className="h-2 w-2 text-red-500" />
+        </Button>
+        <Checkbox
+          className="w-5 h-5 bg-primary cursor-pointer"
+          checked={task.isCompleted}
+          onCheckedChange={() => handleCheck(task.id)}
+        />
+      </div>
       {/* </Button> */}
     </motion.div>
   );
