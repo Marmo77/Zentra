@@ -35,9 +35,9 @@ const Navigation = () => {
           <div className="h-8 w-8 rounded-full bg-accent/20 flex items-center justify-center">
             <Timer className="h-4 w-4 text-accent" />
           </div>
-          <h1 className="text-xl font-medium tracking-tight cursor-pointer text-transparent bg-clip-text bg-linear-to-br from-accent to-primary group-hover:to-accent group-hover:from-primary transition-colors duration-300 ease-in-out">
+          <p className="text-xl font-medium tracking-tight cursor-pointer text-transparent bg-clip-text bg-linear-to-br from-accent to-primary group-hover:to-accent group-hover:from-primary transition-colors duration-300 ease-in-out">
             {AppConstants.Website.Title}
-          </h1>
+          </p>
         </div>
         <div className="flex items-center gap-4">
           <span className="text-sm text-muted-foreground hidden sm:block">

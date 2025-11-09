@@ -1,7 +1,6 @@
 import { Button } from "../ui/button";
 import { Sun, Moon } from "lucide-react";
 import { AppConstants } from "@/data/constants";
-// import { handleNavigate } from "../handleNavigate";
 import { useNavigate } from "react-router-dom";
 
 interface NavbarProps {
