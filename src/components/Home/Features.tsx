@@ -99,7 +99,7 @@ const Features = () => {
 const FeatureCard = ({ icon, title, description }: FeatureCardprops) => {
   const Icon = icon;
   return (
-    <Card className="py-6 px-4 rounded-2xl bg-transparent hover:scale-105 border-border/40 border hover:border-accent transition-all duration-500">
+    <Card className="py-6 px-4 rounded-2xl bg-transparent hover:scale-105 border-border/40 border hover:border-accent transition-all duration-500 ">
       <CardContent className="flex flex-col gap-3">
         <div className="h-10 w-10">{Icon}</div>
         <h3 className="text-lg">{title}</h3>

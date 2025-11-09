@@ -1,6 +1,7 @@
 import { Button } from "../ui/button";
-import { Sun, Moon } from "lucide-react";
+import { Sun, Moon, Home } from "lucide-react";
 import { AppConstants } from "@/data/constants";
+import { useNavigate } from "react-router-dom";
 
 interface NavbarProps {
   isDarkMode: boolean;
@@ -8,38 +9,31 @@ interface NavbarProps {
 }
 
 const Navbar = ({ isDarkMode, onThemeToggle }: NavbarProps) => {
+  const navigate = useNavigate();
   const handleNavigate = (section: string) => {
-    const element = document.getElementById(section);
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
+    if (section.startsWith("#")) {
+      navigate("/", { state: { scrollTo: section } });
     }
   };
-  const navItems = [
-    { label: "Home", href: "#home" },
-    { label: "About", href: "#about" },
-    { label: "How It Works", href: "#how-it-works" },
-    { label: "Features", href: "#features" },
-  ];
-
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-background/70 backdrop-blur-md border-b border-border/40 shadow-xs">
       <div className="container mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <a
-            onClick={() => handleNavigate("home")}
+          <p
+            onClick={() => handleNavigate("#home")}
             className="text-xl font-medium tracking-tight cursor-pointer text-transparent bg-clip-text bg-linear-to-br from-accent to-primary hover:to-accent hover:from-primary transition-colors duration-300 ease-in-out"
           >
             {AppConstants.Website.Title}
-          </a>
+          </p>
 
           {/* Navigation Links - Hidden on mobile */}
           <nav className="hidden md:flex items-center gap-8">
-            {navItems.map((item) => (
+            {AppConstants.Navigation.navbar.map((item) => (
               <a
                 key={item.label}
-                onClick={() => handleNavigate(item.href.replace("#", ""))}
                 className="text-sm font-light text-muted-foreground cursor-pointer hover:text-foreground duration-300 ease-in-out transition-colors"
+                onClick={() => handleNavigate(item.href)}
               >
                 {item.label}
               </a>
