@@ -49,7 +49,7 @@ const Fucus = () => {
   };
 
   return (
-    <div className="text-center flex flex-col gap-4 justify-center items-center h-screen">
+    <div className="text-center flex flex-col gap-4 justify-center items-center">
       <h1>Fucus</h1>
       <div className="flex flex-col gap-4">
         <Timer time={time} />
@@ -71,7 +71,7 @@ const Fucus = () => {
       </div>
       <div>
         <h2>Choose Session length:</h2>
-        <div className="flex flex-col gap-3">
+        <div className="gap-3">
           <SessionLength
             lastSessionLength={lastSessionLength}
             handleSession={handleSessionLengthSelect}
@@ -106,7 +106,7 @@ const SessionLength = memo(
     const sessionLength = timeOptions;
 
     return (
-      <div className="flex gap-3">
+      <div className="grid grid-cols-3 gap-3">
         {sessionLength.map((option) => (
           <Button
             variant={
