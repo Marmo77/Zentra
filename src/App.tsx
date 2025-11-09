@@ -4,6 +4,7 @@ import { Routes } from "react-router-dom";
 import { Route } from "react-router-dom";
 import Layout from "./components/Layout/Layout";
 import NotFound from "./components/NotFound";
+import MainApp from "./components/MainApp/MainApp";
 
 function App() {
   const [isDarkMode, setIsDarkMode] = useState(() => {
@@ -41,7 +42,7 @@ function App() {
           }
         >
           <Route path="/" index element={<Home />} />
-          {/* <Route path="/app" element={}/> */}
+          <Route path="/app" element={<MainApp />} />
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
