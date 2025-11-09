@@ -1,6 +1,7 @@
 import { Button } from "../ui/button";
-import { Sun, Moon, Home } from "lucide-react";
+import { Sun, Moon } from "lucide-react";
 import { AppConstants } from "@/data/constants";
+// import { handleNavigate } from "../handleNavigate";
 import { useNavigate } from "react-router-dom";
 
 interface NavbarProps {
@@ -10,11 +11,13 @@ interface NavbarProps {
 
 const Navbar = ({ isDarkMode, onThemeToggle }: NavbarProps) => {
   const navigate = useNavigate();
+
   const handleNavigate = (section: string) => {
     if (section.startsWith("#")) {
       navigate("/", { state: { scrollTo: section } });
     }
   };
+
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-background/70 backdrop-blur-md border-b border-border/40 shadow-xs">
       <div className="container mx-auto px-6 py-4">

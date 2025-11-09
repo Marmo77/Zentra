@@ -1,8 +1,10 @@
 import Fucus from "./Fucus";
+import FocusNav from "./Navigation";
 
 const MainApp = () => {
   return (
-    <section className="my-12">
+    <section className="">
+      <FocusNav />
       <Fucus />
     </section>
   );

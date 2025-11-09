@@ -42,9 +42,9 @@ function App() {
           }
         >
           <Route path="/" index element={<Home />} />
-          <Route path="/app" element={<MainApp />} />
           <Route path="*" element={<NotFound />} />
         </Route>
+        <Route path="/app" element={<MainApp />} />
       </Routes>
     </>
   );
