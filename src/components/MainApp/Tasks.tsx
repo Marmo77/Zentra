@@ -54,18 +54,6 @@ const Tasks = () => {
     }
     return true;
   };
-
-  //   const test = () => {
-  //     toast.info(errorMessage[0].message, {
-  //       richColors: true,
-  //       duration: 3000,
-  //       closeButton: true,
-  //     });
-  //   };
-  //   useEffect(() => {
-  //     test();
-  //   }, []);
-
   const errorMessage = [
     { id: 1, message: "Task is empty" },
     {
@@ -94,7 +82,7 @@ const Tasks = () => {
     );
   };
   return (
-    <Card className="border-border rounded-2xl bg-card/20 h-fit">
+    <Card className="border-border rounded-2xl bg-card/20 backdrop-blur-sm h-fit">
       <CardContent className="px-6 flex flex-col gap-6">
         <div className="flex items-center justify-between">
           <h1 className="tracking-wide">Tasks</h1>
@@ -115,6 +103,14 @@ const Tasks = () => {
           <Button className="rounded-xl" onClick={handleAddTask}>
             <Plus />
           </Button>
+          {/* BUTTON inside the input */}
+          {/*         <Button
+            className="absolute right-2 top-1/2 -translate-y-1/2 rounded-xl"
+            size={"icon-sm"}
+            onClick={handleAddTask}
+          >
+            <Plus className="w-4 h-4" />
+          </Button> */}
         </div>
         {tasks.length === 0 ? (
           <div className="text-center h-16 flex items-center justify-center text-xs text-muted-foreground">
