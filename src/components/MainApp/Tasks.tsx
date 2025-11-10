@@ -162,8 +162,8 @@ const Task = ({
       key={task.id}
       className={`flex relative items-center rounded-2xl duration-300 transition-colors border-border/40 px-4 py-2 border ${
         task.isCompleted
-          ? "line-through opacity-50 bg-accent/20 hover:bg-accent/20"
-          : "hover:bg-primary/10"
+          ? " bg-accent/15 hover:bg-accent/15"
+          : "hover:bg-primary/5"
       } group`}
     >
       <div className="flex items-center w-full justify-between gap-2 min-w-0">
@@ -175,7 +175,11 @@ const Task = ({
           />
           <Tooltip>
             <TooltipTrigger asChild>
-              <p className="text-sm px-2 py-1 overflow-hidden text-ellipsis min-w-0">
+              <p
+                className={`text-sm px-2 py-1 overflow-hidden text-ellipsis min-w-0 ${
+                  task.isCompleted ? "line-through opacity-50" : ""
+                }`}
+              >
                 {task.task}
               </p>
             </TooltipTrigger>
