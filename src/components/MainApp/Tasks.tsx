@@ -82,6 +82,11 @@ const Tasks = () => {
       )
     );
   };
+  const handleDeleteTask = (id: number) => {
+    console.log(id);
+    // set tasks to prev state but filter only that that has different id then that we clicked.
+    setTasks((prev) => prev.filter((task) => task.id !== id));
+  };
   return (
     <Card className="border-border rounded-2xl bg-card/20 backdrop-blur-sm h-fit">
       <CardContent className="px-6 flex flex-col gap-6">
@@ -121,7 +126,11 @@ const Tasks = () => {
           <>
             <div className="flex flex-col gap-2">
               {tasks.map((task) => (
-                <Task task={task} handleCheck={handleCheck} />
+                <Task
+                  task={task}
+                  handleCheck={handleCheck}
+                  deleteTask={handleDeleteTask}
+                />
               ))}
             </div>
             <div className="flex items-center justify-between px-1">
@@ -139,9 +148,11 @@ const Tasks = () => {
 const Task = ({
   task,
   handleCheck,
+  deleteTask,
 }: {
   task: TaskProps;
   handleCheck: (id: number) => void;
+  deleteTask: (id: number) => void;
 }) => {
   return (
     <motion.div
@@ -149,22 +160,22 @@ const Task = ({
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
       key={task.id}
-      className={`flex relative items-center rounded-2xl text-wrap duration-300 transition-colors border-border/40 px-4 py-2 border ${
+      className={`flex relative items-center rounded-2xl duration-300 transition-colors border-border/40 px-4 py-2 border ${
         task.isCompleted
           ? "line-through opacity-50 bg-accent/20 hover:bg-accent/20"
           : "hover:bg-primary/10"
       } group`}
     >
-      <div className="flex items-center w-full justify-between ">
-        <div className="flex items-center gap-1">
+      <div className="flex items-center w-full justify-between gap-2 min-w-0">
+        <div className="flex items-center gap-1 min-w-0 flex-1">
           <Checkbox
-            className="w-5 h-5 bg-primary cursor-pointer"
+            className="w-5 h-5 bg-primary cursor-pointer shrink-0"
             checked={task.isCompleted}
             onCheckedChange={() => handleCheck(task.id)}
           />
           <Tooltip>
             <TooltipTrigger asChild>
-              <p className="text-sm px-2 py-1 overflow-hidden text-ellipsis">
+              <p className="text-sm px-2 py-1 overflow-hidden text-ellipsis min-w-0">
                 {task.task}
               </p>
             </TooltipTrigger>
@@ -175,8 +186,8 @@ const Task = ({
         </div>
         {/* Delete Button */}
         <button
-          // onClick={() => deleteTask(task.id)}
-          className="shrink-0 opacity-0 group-hover:opacity-100 p-2 hover:bg-red-500/20 rounded-lg transition-all duration-300 hover:scale-110"
+          onClick={() => deleteTask(task.id)}
+          className="shrink-0 opacity-0 group-hover:opacity-100 p-2 hover:bg-red-500/20 rounded-lg cursor-pointer transition-all duration-300 hover:scale-110"
         >
           <Trash2 className="w-4 h-4 text-red-400" />
         </button>

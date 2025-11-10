@@ -36,7 +36,7 @@ const MainApp = () => {
       </div>
       <FocusNav />
       <div className="max-w-7xl mx-auto">
-        <div className="grid md:grid-cols-3 grid-cols-1 gap-4 px-6">
+        <div className="grid lg:grid-cols-3 grid-cols-1 gap-4 px-6">
           <Tasks />
           <Fucus />
           <Inspiration />
