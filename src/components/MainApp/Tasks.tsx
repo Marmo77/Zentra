@@ -191,7 +191,7 @@ const Task = ({
         {/* Delete Button */}
         <button
           onClick={() => deleteTask(task.id)}
-          className="shrink-0 opacity-0 group-hover:opacity-100 p-2 hover:bg-red-500/20 rounded-lg cursor-pointer transition-all duration-300 hover:scale-110"
+          className="shrink-0 opacity-0 group-hover:opacity-100 max-md:opacity-100 p-2 hover:bg-red-500/20 rounded-lg cursor-pointer transition-all duration-300 hover:scale-110"
         >
           <Trash2 className="w-4 h-4 text-red-400" />
         </button>
