@@ -10,26 +10,17 @@ import { toast } from "sonner";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 import { Checkbox } from "../ui/checkbox";
 
-const Tasks = () => {
-  const [tasks, setTasks] = useState<TaskProps[]>(
-    JSON.parse(localStorage.getItem("tasks") || "[]")
-  );
-  const [userSaveToLocalStorage, setUserSaveToLocalStorage] = useState(true);
+interface TasksComponentProps {
+  tasks: TaskProps[];
+  setTasks: React.Dispatch<React.SetStateAction<TaskProps[]>>;
+}
 
+const Tasks = ({ tasks, setTasks }: TasksComponentProps) => {
   const [actualTask, setActualTask] = useState<TaskProps>({
     id: Date.now(),
     task: "",
     isCompleted: false,
   });
-
-  // Save to localStorage whenever tasks change
-  useEffect(() => {
-    if (userSaveToLocalStorage) {
-      localStorage.setItem("tasks", JSON.stringify(tasks));
-    } else {
-      localStorage.removeItem("tasks");
-    }
-  }, [tasks, userSaveToLocalStorage]);
 
   const maxLengthTask = 50;
 
