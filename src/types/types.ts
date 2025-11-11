@@ -3,3 +3,7 @@ export type TaskProps = {
   task: string;
   isCompleted: boolean;
 };
+export type UserSettings = {
+  saveToLocalStorage: boolean;
+  saveTime: boolean;
+};

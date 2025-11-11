@@ -1,15 +1,31 @@
-import { memo, useEffect, useState } from "react";
+import { memo, useEffect } from "react";
 import { Button } from "../ui/button";
 import { timeOptions } from "@/types/focus-app";
+import { motion } from "motion/react";
+import { Pause, Play, RotateCcw } from "lucide-react";
+import type { UserSettings } from "@/types/types";
 
-const Fucus = () => {
-  const [time, setTime] = useState(25 * 60);
-  const [isRunning, setIsRunning] = useState(false);
-
+const Fucus = ({
+  time,
+  isRunning,
+  setTime,
+  setIsRunning,
+  userSettings,
+}: {
+  time: number;
+  isRunning: boolean;
+  setTime: React.Dispatch<React.SetStateAction<number>>;
+  setIsRunning: React.Dispatch<React.SetStateAction<boolean>>;
+  userSettings: UserSettings;
+}) => {
   const lastSessionLength = localStorage.getItem("sessionLength") || "25";
-
   useEffect(() => {
-    setTime(Number(lastSessionLength) * 60);
+    const savedTime = localStorage.getItem("time");
+    if (savedTime && userSettings.saveTime) {
+      setTime(Number(savedTime));
+    } else {
+      setTime(Number(lastSessionLength) * 60);
+    }
   }, []);
 
   const handleStart = () => {
@@ -23,24 +39,18 @@ const Fucus = () => {
   const handleReset = () => {
     setIsRunning(false);
     setTime(Number(lastSessionLength) * 60);
-    // localStorage.setItem("sessionLength", "25");
+    if (userSettings.saveTime) {
+      localStorage.setItem("time", time.toString());
+    }
   };
 
   useEffect(() => {
-    if (time === 0) {
-      handleReset();
+    if (time === 0 && isRunning) {
+      setIsRunning(false);
       alert("Congratulations!");
+      setTime(Number(lastSessionLength) * 60);
     }
-  }, [time]);
-
-  useEffect(() => {
-    if (isRunning) {
-      const timer = setInterval(() => {
-        setTime((prev) => prev - 1);
-      }, 1000);
-      return () => clearInterval(timer);
-    }
-  }, [isRunning]);
+  }, [time, isRunning, setIsRunning, setTime, lastSessionLength]);
 
   const handleSessionLengthSelect = (value: string) => {
     setIsRunning(false);
@@ -51,24 +61,53 @@ const Fucus = () => {
   return (
     <div className="text-center flex flex-col gap-4 justify-center items-center space-y-8 py-8">
       <div className="">
-        <Timer time={time} />
+        <Timer time={time} isRunning={isRunning} />
       </div>
       <div className="flex gap-4">
-        <Button onClick={handleStart} disabled={isRunning}>
-          Start
-        </Button>
-        <Button variant={"outline"} onClick={handleStop} disabled={!isRunning}>
-          Pause
-        </Button>
-        <Button variant={"destructive"} onClick={handleReset}>
-          Reset
-        </Button>
+        <motion.div
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          className="gap-4 flex"
+        >
+          {!isRunning ? (
+            <Button
+              onClick={handleStart}
+              variant={"focusTime"}
+              size={"lg"}
+              className="rounded-3xl px-4"
+            >
+              <Play className="mr-1 h-4 w-4" />
+              Start
+            </Button>
+          ) : (
+            <Button
+              onClick={handleStop}
+              variant={"outline"}
+              size={"lg"}
+              className="rounded-3xl py-4"
+            >
+              <Pause className="mr-1 h-4 w-4" />
+              Pause
+            </Button>
+          )}
+        </motion.div>
+        <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+          <Button
+            onClick={handleReset}
+            variant={"ghost"}
+            size={"lg"}
+            className="rounded-full px-8"
+          >
+            <RotateCcw className="mr-1 h-4 w-4" />
+            Reset
+          </Button>
+        </motion.div>
       </div>
       <div>
         <h2>Choose Session length:</h2>
         <div className="gap-3">
           <SessionLength
-            lastSessionLength={lastSessionLength}
+            lastSessionLength={lastSessionLength.toString()}
             handleSession={handleSessionLengthSelect}
           />
         </div>
@@ -77,19 +116,39 @@ const Fucus = () => {
   );
 };
 
-const Timer = memo(({ time }: { time: number }) => {
-  const minutes = Math.floor(time / 60);
-  const seconds = time % 60 < 10 ? `0${time % 60}` : time % 60;
-  const formatedTime = `${minutes}:${seconds}`;
+const Timer = memo(
+  ({ time, isRunning }: { time: number; isRunning: boolean }) => {
+    const minutes = Math.floor(time / 60);
+    const seconds = time % 60 < 10 ? `0${time % 60}` : time % 60;
+    const formatedTime = `${minutes}:${seconds}`;
 
-  return (
-    <div className="flex flex-col gap-2">
-      <p className="text-7xl sm:text-8xl text-center text-card- font-bold">
-        {formatedTime}
-      </p>
-    </div>
-  );
-});
+    return (
+      <div className="relative z-10 flex flex-col items-center">
+        <motion.div
+          key={time}
+          initial={{ scale: 1 }}
+          animate={{ scale: isRunning ? [1, 1.02, 1] : 1 }}
+          transition={{ duration: 1, repeat: isRunning ? Infinity : 0 }}
+          className="text-8xl sm:text-9xl text-center text-card-foreground tracking-tight font-semibold"
+          style={{
+            fontVariantNumeric: "tabular-nums",
+            lineHeight: 1,
+          }}
+        >
+          {formatedTime}
+        </motion.div>
+        <motion.p
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+          className="text-base text-center text-muted-foreground mt-4"
+        >
+          {isRunning ? "Stay focused." : "Ready to focus?"}
+        </motion.p>
+      </div>
+    );
+  }
+);
 
 const SessionLength = memo(
   ({
