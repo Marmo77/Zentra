@@ -5,35 +5,32 @@ import { Plus, Trash2 } from "lucide-react";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import type { TaskProps } from "@/types/types";
-import { motion } from "motion/react";
+import { motion, AnimatePresence } from "motion/react";
 import { toast } from "sonner";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 import { Checkbox } from "../ui/checkbox";
 
 const Tasks = () => {
-  const [tasks, setTasks] = useState<TaskProps[]>([]);
+  const [tasks, setTasks] = useState<TaskProps[]>(
+    JSON.parse(localStorage.getItem("tasks") || "[]")
+  );
+  const [userSaveToLocalStorage, setUserSaveToLocalStorage] = useState(true);
+
   const [actualTask, setActualTask] = useState<TaskProps>({
     id: Date.now(),
     task: "",
     isCompleted: false,
   });
 
-  const randomTasks = [
-    // {
-    //   id: 0,
-    //   task: "Task 1",
-    //   isCompleted: true,
-    // },
-    // {
-    //   id: 1,
-    //   task: "Task 2,Task 2,Task 2,Task 2, Task 2",
-    //   isCompleted: false,
-    // },
-  ] as TaskProps[];
-
+  // Save to localStorage whenever tasks change
   useEffect(() => {
-    setTasks(randomTasks);
-  }, []);
+    if (userSaveToLocalStorage) {
+      localStorage.setItem("tasks", JSON.stringify(tasks));
+    } else {
+      localStorage.removeItem("tasks");
+    }
+  }, [tasks, userSaveToLocalStorage]);
+
   const maxLengthTask = 50;
 
   const validTask = () => {
@@ -54,6 +51,7 @@ const Tasks = () => {
     }
     return true;
   };
+
   const errorMessage = [
     { id: 1, message: "Task is empty" },
     {
@@ -63,6 +61,7 @@ const Tasks = () => {
   ];
 
   const activeTasks = tasks.filter((task) => !task.isCompleted);
+
   const handleAddTask = () => {
     if (!validTask()) return;
 
@@ -73,6 +72,7 @@ const Tasks = () => {
       isCompleted: false,
     });
   };
+
   const completedTasks = tasks.filter((task) => task.isCompleted);
 
   const handleCheck = (id: number) => {
@@ -82,11 +82,11 @@ const Tasks = () => {
       )
     );
   };
+
   const handleDeleteTask = (id: number) => {
-    console.log(id);
-    // set tasks to prev state but filter only that that has different id then that we clicked.
     setTasks((prev) => prev.filter((task) => task.id !== id));
   };
+
   return (
     <Card className="border-border rounded-2xl bg-card/20 backdrop-blur-sm h-fit">
       <CardContent className="px-6 flex flex-col gap-6">
@@ -105,18 +105,11 @@ const Tasks = () => {
             onChange={(e) =>
               setActualTask({ ...actualTask, task: e.target.value })
             }
+            onKeyDown={(e) => e.key === "Enter" && handleAddTask()}
           />
           <Button className="rounded-xl" onClick={handleAddTask}>
             <Plus />
           </Button>
-          {/* BUTTON inside the input */}
-          {/*         <Button
-            className="absolute right-2 top-1/2 -translate-y-1/2 rounded-xl"
-            size={"icon-sm"}
-            onClick={handleAddTask}
-          >
-            <Plus className="w-4 h-4" />
-          </Button> */}
         </div>
         {tasks.length === 0 ? (
           <div className="text-center h-16 flex items-center justify-center text-xs text-muted-foreground">
@@ -125,13 +118,16 @@ const Tasks = () => {
         ) : (
           <>
             <div className="flex flex-col gap-2">
-              {tasks.map((task) => (
-                <Task
-                  task={task}
-                  handleCheck={handleCheck}
-                  deleteTask={handleDeleteTask}
-                />
-              ))}
+              <AnimatePresence>
+                {tasks.map((task) => (
+                  <Task
+                    key={task.id}
+                    task={task}
+                    handleCheck={handleCheck}
+                    deleteTask={handleDeleteTask}
+                  />
+                ))}
+              </AnimatePresence>
             </div>
             <div className="flex items-center justify-between px-1">
               <p className="text-[11px] text-muted-foreground">
@@ -158,6 +154,7 @@ const Task = ({
     <motion.div
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, x: -100, transition: { duration: 0.2 } }}
       transition={{ duration: 0.3 }}
       key={task.id}
       className={`flex relative items-center rounded-2xl duration-300 transition-colors border-border/40 px-4 py-2 border ${
@@ -191,7 +188,7 @@ const Task = ({
         {/* Delete Button */}
         <button
           onClick={() => deleteTask(task.id)}
-          className="shrink-0 opacity-0 group-hover:opacity-100 max-md:opacity-100 p-2 hover:bg-red-500/20 rounded-lg cursor-pointer transition-all duration-300 hover:scale-110"
+          className="shrink-0 opacity-0 group-hover:opacity-100 max-lg:opacity-100 p-2 hover:bg-red-500/20 rounded-lg cursor-pointer transition-all duration-300 hover:scale-110"
         >
           <Trash2 className="w-4 h-4 text-red-400" />
         </button>

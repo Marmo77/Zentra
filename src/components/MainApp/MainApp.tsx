@@ -35,11 +35,21 @@ const MainApp = () => {
         />
       </div>
       <FocusNav />
-      <div className="max-w-6xl mx-auto">
-        {/* <div className="grid lg:grid-cols-3 grid-cols-1 gap-4 px-6"> */}
-        <div className="lg:grid lg:grid-cols-[320px_1fr_320px] lg:px-2 py-4 px-12 gap-8 items-start">
-          <Tasks />
+      <div className="max-w-7xl mx-auto">
+        {/* DESKTOP */}
+        <div className="hidden lg:grid lg:grid-cols-[320px_1fr_320px] gap-8 items-start">
+          <div className="sticky top-24">
+            <Tasks />
+          </div>
           <Fucus />
+          <div className="sticky top-24">
+            <Inspiration />
+          </div>
+        </div>
+        {/* MOBILE */}
+        <div className="lg:hidden flex flex-col justify-center space-y-6 p-6">
+          <Fucus />
+          <Tasks />
           <Inspiration />
         </div>
       </div>

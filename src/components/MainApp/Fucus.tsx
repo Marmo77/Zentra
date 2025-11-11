@@ -1,6 +1,7 @@
 import { memo, useEffect, useState } from "react";
 import { Button } from "../ui/button";
 import { timeOptions } from "@/types/focus-app";
+import { motion } from "motion/react";
 
 const Fucus = () => {
   const [time, setTime] = useState(25 * 60);
@@ -51,9 +52,9 @@ const Fucus = () => {
   return (
     <div className="text-center flex flex-col gap-4 justify-center items-center space-y-8 py-8">
       <div className="">
-        <Timer time={time} />
+        <Timer time={time} isRunning={isRunning} />
       </div>
-      <div className="flex gap-4">
+      {/* <div className="flex gap-4">
         <Button onClick={handleStart} disabled={isRunning}>
           Start
         </Button>
@@ -63,7 +64,7 @@ const Fucus = () => {
         <Button variant={"destructive"} onClick={handleReset}>
           Reset
         </Button>
-      </div>
+      </div> */}
       <div>
         <h2>Choose Session length:</h2>
         <div className="gap-3">
@@ -77,19 +78,39 @@ const Fucus = () => {
   );
 };
 
-const Timer = memo(({ time }: { time: number }) => {
-  const minutes = Math.floor(time / 60);
-  const seconds = time % 60 < 10 ? `0${time % 60}` : time % 60;
-  const formatedTime = `${minutes}:${seconds}`;
+const Timer = memo(
+  ({ time, isRunning }: { time: number; isRunning: boolean }) => {
+    const minutes = Math.floor(time / 60);
+    const seconds = time % 60 < 10 ? `0${time % 60}` : time % 60;
+    const formatedTime = `${minutes}:${seconds}`;
 
-  return (
-    <div className="flex flex-col gap-2">
-      <p className="text-7xl sm:text-8xl text-center text-card- font-bold">
-        {formatedTime}
-      </p>
-    </div>
-  );
-});
+    return (
+      <div className="relative z-10 flex flex-col items-center">
+        <motion.div
+          key={time}
+          initial={{ scale: 1 }}
+          animate={{ scale: isRunning ? [1, 1.02, 1] : 1 }}
+          transition={{ duration: 1, repeat: isRunning ? Infinity : 0 }}
+          className="text-8xl sm:text-9xl text-center text-card-foreground tracking-tight"
+          style={{
+            fontVariantNumeric: "tabular-nums",
+            lineHeight: 1,
+          }}
+        >
+          {formatedTime}
+        </motion.div>
+        <motion.p
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+          className="text-base text-center text-card-foreground mt-4"
+        >
+          {isRunning ? "Stay focused." : "Ready to focus?"}
+        </motion.p>
+      </div>
+    );
+  }
+);
 
 const SessionLength = memo(
   ({
