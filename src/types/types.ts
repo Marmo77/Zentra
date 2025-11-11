@@ -5,4 +5,5 @@ export type TaskProps = {
 };
 export type UserSettings = {
   saveToLocalStorage: boolean;
+  saveTime: boolean;
 };

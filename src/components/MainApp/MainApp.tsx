@@ -13,6 +13,7 @@ const MainApp = () => {
 
   const [userSettings, setUserSettings] = useState<UserSettings>({
     saveToLocalStorage: true,
+    saveTime: true,
   });
 
   useEffect(() => {
@@ -22,6 +23,27 @@ const MainApp = () => {
       localStorage.removeItem("tasks");
     }
   }, [tasks, userSettings.saveToLocalStorage]);
+
+  // FOCUS TIME AND IS RUNNING
+  const [time, setTime] = useState(25 * 60);
+  const [isRunning, setIsRunning] = useState(false);
+
+  useEffect(() => {
+    if (isRunning) {
+      const timer = setInterval(() => {
+        setTime((prev) => prev - 1);
+      }, 1000);
+      return () => clearInterval(timer);
+    }
+  }, [isRunning]);
+
+  useEffect(() => {
+    if (userSettings.saveTime) {
+      localStorage.setItem("time", time.toString());
+    } else {
+      localStorage.removeItem("time");
+    }
+  }, [time, userSettings.saveTime]);
 
   return (
     <section className="min-h-screen relative overflow-hidden">
@@ -59,14 +81,25 @@ const MainApp = () => {
           <div className="sticky top-24">
             <Tasks tasks={tasks} setTasks={setTasks} />
           </div>
-          <Fucus />
+          <Fucus
+            time={time}
+            isRunning={isRunning}
+            setTime={setTime}
+            setIsRunning={setIsRunning}
+            userSettings={userSettings}
+          />
           <div className="sticky top-24">
             <Inspiration />
           </div>
         </div>
         {/* MOBILE */}
         <div className="lg:hidden flex flex-col justify-center space-y-6 p-6">
-          <Fucus />
+          <Fucus
+            time={time}
+            isRunning={isRunning}
+            setTime={setTime}
+            setIsRunning={setIsRunning}
+          />
           <Tasks tasks={tasks} setTasks={setTasks} />
           <Inspiration />
         </div>
