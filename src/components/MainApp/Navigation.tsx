@@ -26,7 +26,7 @@ const Navigation = () => {
   };
 
   return (
-    <section className="p-6">
+    <section className="p-6 max-w-7xl mx-auto">
       <div className="flex gap-3 items-center justify-between">
         <div
           className="flex items-center gap-3 cursor-pointer group"

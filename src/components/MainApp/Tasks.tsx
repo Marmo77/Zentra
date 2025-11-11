@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { Card, CardContent } from "../ui/card";
 
-import { ArrowUpRightIcon, Plus, Trash2, X } from "lucide-react";
+import { Plus, Trash2 } from "lucide-react";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import type { TaskProps } from "@/types/types";
 import { motion } from "motion/react";
-import { Toaster, toast } from "sonner";
+import { toast } from "sonner";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 import { Checkbox } from "../ui/checkbox";
 
@@ -169,7 +169,7 @@ const Task = ({
       <div className="flex items-center w-full justify-between gap-2 min-w-0">
         <div className="flex items-center gap-1 min-w-0 flex-1">
           <Checkbox
-            className="w-5 h-5 bg-primary cursor-pointer shrink-0"
+            className="w-5 h-5 not-dark:bg-card-foreground/10 dark:bg-card cursor-pointer shrink-0"
             checked={task.isCompleted}
             onCheckedChange={() => handleCheck(task.id)}
           />

@@ -35,8 +35,9 @@ const MainApp = () => {
         />
       </div>
       <FocusNav />
-      <div className="max-w-7xl mx-auto">
-        <div className="grid lg:grid-cols-3 grid-cols-1 gap-4 px-6">
+      <div className="max-w-6xl mx-auto">
+        {/* <div className="grid lg:grid-cols-3 grid-cols-1 gap-4 px-6"> */}
+        <div className="lg:grid lg:grid-cols-[320px_1fr_320px] lg:px-2 py-4 px-12 gap-8 items-start">
           <Tasks />
           <Fucus />
           <Inspiration />

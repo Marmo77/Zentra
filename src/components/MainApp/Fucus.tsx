@@ -49,25 +49,20 @@ const Fucus = () => {
   };
 
   return (
-    <div className="text-center flex flex-col gap-4 justify-center items-center">
-      <h1>Fucus</h1>
-      <div className="flex flex-col gap-4">
+    <div className="text-center flex flex-col gap-4 justify-center items-center space-y-8 py-8">
+      <div className="">
         <Timer time={time} />
-        <div className="flex gap-4">
-          <Button onClick={handleStart} disabled={isRunning}>
-            Start
-          </Button>
-          <Button
-            variant={"outline"}
-            onClick={handleStop}
-            disabled={!isRunning}
-          >
-            Pause
-          </Button>
-          <Button variant={"destructive"} onClick={handleReset}>
-            Reset
-          </Button>
-        </div>
+      </div>
+      <div className="flex gap-4">
+        <Button onClick={handleStart} disabled={isRunning}>
+          Start
+        </Button>
+        <Button variant={"outline"} onClick={handleStop} disabled={!isRunning}>
+          Pause
+        </Button>
+        <Button variant={"destructive"} onClick={handleReset}>
+          Reset
+        </Button>
       </div>
       <div>
         <h2>Choose Session length:</h2>
@@ -89,8 +84,9 @@ const Timer = memo(({ time }: { time: number }) => {
 
   return (
     <div className="flex flex-col gap-2">
-      <h1 className="font-bold text-2xl">Timer</h1>
-      <p className="text-4xl font-bold">{formatedTime}</p>
+      <p className="text-7xl sm:text-8xl text-center text-card- font-bold">
+        {formatedTime}
+      </p>
     </div>
   );
 });
