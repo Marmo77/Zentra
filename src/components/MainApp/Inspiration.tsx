@@ -47,7 +47,7 @@ const Inspiration = () => {
 
     const interval = setInterval(() => {
       setActiveQuoteIndex((prev) => (prev + 1) % quotes.length);
-    }, 3000);
+    }, 20000);
     return () => clearInterval(interval);
   }, []);
 
@@ -55,7 +55,7 @@ const Inspiration = () => {
     <Card className="border-border rounded-2xl bg-card/20 backdrop-blur-sm h-fit">
       <CardContent className="px-6 flex flex-col gap-4">
         <div className="flex text-sm items-center gap-2">
-          <Sparkles className="w-3.5 h-3.5 text-accent" />
+          <Sparkles className="w-4 h-4 text-accent" />
           <p>Todays Inspirations</p>
         </div>
         <AnimatePresence mode="wait">
@@ -73,25 +73,16 @@ const Inspiration = () => {
             </span>
           </motion.div>
         </AnimatePresence>
-        <div
-          className={`grid gap-2`}
-          style={{
-            gridTemplateColumns: `${
-              quotes.length < 10
-                ? `repeat(${quotes.length}, 1fr)`
-                : `repeat(10, 1fr)`
-            }`,
-          }}
-        >
+        <div className="flex gap-1 mt-3">
           {quotes.map((_, index) => (
-            <motion.div
+            <div
               key={index}
-              className={`rounded-2xl px-1.5 py-0.5 ${
-                index === activeQuoteIndex ? "bg-accent" : "bg-primary/10"
+              className={`h-1 flex-1 rounded-full transition-all duration-300 ${
+                index === activeQuoteIndex
+                  ? "bg-accent"
+                  : "bg-muted-foreground/15"
               }`}
-              initial={{ opacity: 0, scale: 0 }}
-              animate={{ opacity: 1, scale: 1 }}
-            ></motion.div>
+            />
           ))}
         </div>
       </CardContent>
