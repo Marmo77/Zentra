@@ -19,10 +19,10 @@ const Fucus = ({
   userSettings: UserSettings;
 }) => {
   const lastSessionLength = localStorage.getItem("sessionLength") || "25";
-
   useEffect(() => {
-    if (userSettings.saveTime) {
-      setTime(Number(localStorage.getItem("time")));
+    const savedTime = localStorage.getItem("time");
+    if (savedTime && userSettings.saveTime) {
+      setTime(Number(savedTime));
     } else {
       setTime(Number(lastSessionLength) * 60);
     }
@@ -39,14 +39,18 @@ const Fucus = ({
   const handleReset = () => {
     setIsRunning(false);
     setTime(Number(lastSessionLength) * 60);
+    if (userSettings.saveTime) {
+      localStorage.setItem("time", time.toString());
+    }
   };
 
   useEffect(() => {
-    if (time === 0) {
-      handleReset();
+    if (time === 0 && isRunning) {
+      setIsRunning(false);
       alert("Congratulations!");
+      setTime(Number(lastSessionLength) * 60);
     }
-  }, [time]);
+  }, [time, isRunning, setIsRunning, setTime, lastSessionLength]);
 
   const handleSessionLengthSelect = (value: string) => {
     setIsRunning(false);
@@ -103,7 +107,7 @@ const Fucus = ({
         <h2>Choose Session length:</h2>
         <div className="gap-3">
           <SessionLength
-            lastSessionLength={lastSessionLength}
+            lastSessionLength={lastSessionLength.toString()}
             handleSession={handleSessionLengthSelect}
           />
         </div>

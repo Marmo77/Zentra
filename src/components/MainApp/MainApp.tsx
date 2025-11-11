@@ -25,7 +25,8 @@ const MainApp = () => {
   }, [tasks, userSettings.saveToLocalStorage]);
 
   // FOCUS TIME AND IS RUNNING
-  const [time, setTime] = useState(25 * 60);
+  const savedTime = localStorage.getItem("time");
+  const [time, setTime] = useState(savedTime ? Number(savedTime) : 25 * 60);
   const [isRunning, setIsRunning] = useState(false);
 
   useEffect(() => {
@@ -99,6 +100,7 @@ const MainApp = () => {
             isRunning={isRunning}
             setTime={setTime}
             setIsRunning={setIsRunning}
+            userSettings={userSettings}
           />
           <Tasks tasks={tasks} setTasks={setTasks} />
           <Inspiration />
