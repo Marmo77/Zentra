@@ -53,7 +53,7 @@ const Inspiration = () => {
 
   return (
     <Card className="border-border rounded-2xl bg-card/20 backdrop-blur-sm h-fit">
-      <CardContent className="px-6 flex flex-col gap-4">
+      <CardContent className="px-6 flex flex-col gap-6">
         <div className="flex text-sm items-center gap-2">
           <Sparkles className="w-4 h-4 text-accent" />
           <p>Todays Inspirations</p>
@@ -73,7 +73,7 @@ const Inspiration = () => {
             </span>
           </motion.div>
         </AnimatePresence>
-        <div className="flex gap-1 mt-3">
+        <div className="flex gap-1 mt-2">
           {quotes.map((_, index) => (
             <div
               key={index}
