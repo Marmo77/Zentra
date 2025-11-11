@@ -84,7 +84,7 @@ const Timer = memo(({ time }: { time: number }) => {
 
   return (
     <div className="flex flex-col gap-2">
-      <p className="text-8xl sm:text-9xl text-center text-card- font-bold">
+      <p className="text-7xl sm:text-8xl text-center text-card- font-bold">
         {formatedTime}
       </p>
     </div>
