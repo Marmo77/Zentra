@@ -72,7 +72,7 @@ const Fucus = ({
           {!isRunning ? (
             <Button
               onClick={handleStart}
-              variant={"focusTime"}
+              variant={"default"}
               size={"lg"}
               className="rounded-3xl px-4"
             >
@@ -104,7 +104,9 @@ const Fucus = ({
         </motion.div>
       </div>
       <div>
-        <h2>Choose Session length:</h2>
+        <p className="text-muted-foreground font-semibold text-sm">
+          Session length
+        </p>
         <div className="gap-3">
           <SessionLength
             lastSessionLength={lastSessionLength.toString()}
@@ -161,15 +163,17 @@ const SessionLength = memo(
     const sessionLength = timeOptions;
 
     return (
-      <div className="grid grid-cols-3 gap-3">
+      <div className="flex bg-card mt-2 rounded-2xl">
         {sessionLength.map((option) => (
           <Button
-            variant={
-              option.value === lastSessionLength ? "focusTime" : "default"
-            }
+            variant={"focusTime"}
             key={option.value}
-            className="hover:underline cursor-pointer"
-            onClick={() => handleSession(option.value)}
+            className={`hover:bg-primary/80 cursor-pointer first:rounded-l-2xl last:rounded-r-2xl py-2 px-6 ${
+              option.value.toString() === lastSessionLength
+                ? "bg-primary text-card-foreground"
+                : ""
+            }`}
+            onClick={() => handleSession(option.value.toString())}
           >
             <p>{option.label}</p>
           </Button>
