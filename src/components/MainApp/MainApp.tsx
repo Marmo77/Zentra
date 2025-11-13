@@ -62,7 +62,7 @@ const MainApp = () => {
         className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-primary/20 rounded-full blur-[120px] inset-0 overflow-hidden pointer-events-none"
       />
       <FocusNav />
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-7xl mx-auto px-6">
         {/* DESKTOP */}
         <div className="hidden lg:grid lg:grid-cols-[320px_1fr_320px] gap-8 items-start">
           <div className="sticky top-24">
