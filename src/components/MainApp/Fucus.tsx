@@ -1,9 +1,27 @@
-import { memo, useEffect } from "react";
+import { memo, useEffect, useState } from "react";
 import { Button } from "../ui/button";
-import { timeOptions } from "@/types/focus-app";
+import { timeOptions, timeOptionsData } from "@/types/focus-app";
 import { motion } from "motion/react";
-import { Pause, Play, RotateCcw } from "lucide-react";
+import { Minus, Pause, Play, Plus, RotateCcw } from "lucide-react";
 import type { UserSettings } from "@/types/types";
+import {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from "../ui/drawer";
+import {
+  Bar,
+  BarChart,
+  Cell,
+  ResponsiveContainer,
+  XAxis,
+  YAxis,
+} from "recharts";
 
 const Fucus = ({
   time,
@@ -58,6 +76,12 @@ const Fucus = ({
     localStorage.setItem("sessionLength", value);
   };
 
+  const handleSessionLengthSelectCustom = (value: string) => {
+    setIsRunning(false);
+    setTime(Number(value) * 60);
+    localStorage.setItem("sessionLength", value);
+  };
+
   return (
     <div className="text-center flex flex-col gap-4 justify-center items-center space-y-8 py-8">
       <div className="">
@@ -72,7 +96,7 @@ const Fucus = ({
           {!isRunning ? (
             <Button
               onClick={handleStart}
-              variant={"focusTime"}
+              variant={"default"}
               size={"lg"}
               className="rounded-3xl px-4"
             >
@@ -104,17 +128,157 @@ const Fucus = ({
         </motion.div>
       </div>
       <div>
-        <h2>Choose Session length:</h2>
-        <div className="gap-3">
+        <p className="text-muted-foreground font-semibold text-sm">
+          Session length
+        </p>
+        <div className="flex flex-col gap-3">
           <SessionLength
             lastSessionLength={lastSessionLength.toString()}
             handleSession={handleSessionLengthSelect}
           />
+          <Drawer>
+            <DrawerTrigger asChild>
+              <Button
+                variant={"outline"}
+                className="rounded-xl self-center px-8 hover:bg-primary/80"
+              >
+                Custom
+              </Button>
+            </DrawerTrigger>
+            <DrawerContent>
+              <DrawerFocusTime
+                sessionLength={Number(lastSessionLength)}
+                handleSession={handleSessionLengthSelectCustom}
+              />
+            </DrawerContent>
+          </Drawer>
         </div>
       </div>
     </div>
   );
 };
+
+const DrawerFocusTime = memo(
+  ({
+    sessionLength,
+    handleSession,
+  }: {
+    sessionLength: number;
+    handleSession: (value: string) => void;
+  }) => {
+    const [newSessionLength, setNewSessionLength] =
+      useState<number>(sessionLength);
+
+    const onMinusClick = () => {
+      if (newSessionLength > timeOptionsData[0].value) {
+        setNewSessionLength(newSessionLength - 5);
+      }
+    };
+
+    const onPlusClick = () => {
+      if (
+        newSessionLength < timeOptionsData[timeOptionsData.length - 1].value
+      ) {
+        setNewSessionLength(newSessionLength + 5);
+      }
+    };
+
+    const onCustomClick = () => {
+      handleSession(newSessionLength.toString());
+    };
+
+    return (
+      <div className="mx-auto w-full max-w-sm">
+        <DrawerHeader>
+          <DrawerTitle>Focus Time</DrawerTitle>
+          <DrawerDescription>Set your custom session length.</DrawerDescription>
+        </DrawerHeader>
+        <div className="p-4">
+          <div className="flex items-center justify-center space-x-4">
+            <Button
+              variant={"outline"}
+              size={"icon"}
+              onClick={onMinusClick}
+              className="h-10 w-10 shrink-0 rounded-full"
+              disabled={newSessionLength === timeOptionsData[0].value}
+            >
+              <Minus className="h-5 w-5" />
+            </Button>
+            <div className="flex-1 text-center">
+              <h2 className="text-7xl font-bold -mb-2">{newSessionLength}</h2>
+              <span className="text-muted-foreground text-[0.7rem] uppercase">
+                Minutes
+              </span>
+            </div>
+            <Button
+              variant={"outline"}
+              size={"icon"}
+              onClick={onPlusClick}
+              className="h-10 w-10 shrink-0 rounded-full"
+              disabled={
+                newSessionLength ===
+                timeOptionsData[timeOptionsData.length - 1].value
+              }
+            >
+              <Plus className="h-5 w-5" />
+            </Button>
+          </div>
+          <div className="mt-3 h-[120px] border-0 outline-0">
+            <ResponsiveContainer
+              width="100%"
+              height="100%"
+              className="outline-0"
+            >
+              <BarChart data={timeOptionsData}>
+                <XAxis hide={true} />
+                <YAxis hide={true} />
+                <Bar
+                  dataKey="value"
+                  onClick={(e) => {
+                    const val = Array.isArray(e.value) ? e.value[0] : e.value;
+                    setNewSessionLength(val);
+                  }}
+                  fill="#1f1f1f"
+                >
+                  {timeOptionsData.map((entry, index) => (
+                    <Cell
+                      key={`cell-${index}`}
+                      fill={
+                        entry.value === newSessionLength ? "#3b82f6" : "#1f1f1f"
+                      }
+                      className="cursor-pointer"
+                    />
+                  ))}
+                </Bar>
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+          <DrawerFooter className="flex flex-col gap-2">
+            <DrawerClose asChild>
+              <Button
+                variant={"default"}
+                size={"lg"}
+                className="rounded-xl hover:bg-primary/80"
+                onClick={onCustomClick}
+              >
+                Save
+              </Button>
+            </DrawerClose>
+            <DrawerClose asChild>
+              <Button
+                variant={"outline"}
+                size={"lg"}
+                className="rounded-xl hover:bg-primary/80"
+              >
+                Cancel
+              </Button>
+            </DrawerClose>
+          </DrawerFooter>
+        </div>
+      </div>
+    );
+  }
+);
 
 const Timer = memo(
   ({ time, isRunning }: { time: number; isRunning: boolean }) => {
@@ -161,19 +325,23 @@ const SessionLength = memo(
     const sessionLength = timeOptions;
 
     return (
-      <div className="grid grid-cols-3 gap-3">
-        {sessionLength.map((option) => (
-          <Button
-            variant={
-              option.value === lastSessionLength ? "focusTime" : "default"
-            }
-            key={option.value}
-            className="hover:underline cursor-pointer"
-            onClick={() => handleSession(option.value)}
-          >
-            <p>{option.label}</p>
-          </Button>
-        ))}
+      <div>
+        <div className="flex bg-card mt-2 rounded-2xl">
+          {sessionLength.map((option) => (
+            <Button
+              variant={"focusTime"}
+              key={option.value}
+              className={`hover:bg-primary/80 cursor-pointer first:rounded-l-2xl last:rounded-r-2xl py-2 px-6 ${
+                option.value.toString() === lastSessionLength
+                  ? "bg-primary text-card"
+                  : ""
+              }`}
+              onClick={() => handleSession(option.value.toString())}
+            >
+              <p>{option.label}</p>
+            </Button>
+          ))}
+        </div>
       </div>
     );
   }

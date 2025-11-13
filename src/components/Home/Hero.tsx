@@ -78,15 +78,6 @@ function Hero({ onStartFocusing, onLearnMore }: HeroSectionProps) {
             </motion.div>
           </h1>
         </div>
-        {/* <motion.h1
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: -10 }}
-          transition={{ delay: 0.2, duration: 0.9 }}
-          className="text-5xl md:text-6xl lg:text-7xl tracking-tight bg-linear-to-br from-foreground via-foreground to-accent bg-clip-text text-transparent"
-        >
-          Enter your space of clarity.
-        </motion.h1> */}
-
         {/* Subheading */}
         <motion.p
           initial={{ opacity: 0, y: 20 }}
@@ -108,7 +99,7 @@ function Hero({ onStartFocusing, onLearnMore }: HeroSectionProps) {
           <Button
             onClick={onStartFocusing}
             size="lg"
-            className="rounded-full px-10 py-7 text-lg bg-accent text-black hover:bg-accent/90 hover:scale-[1.02] transition-all duration-300 shadow-lg shadow-primary/20 group min-w-[200px]"
+            className="rounded-full px-10 py-7 text-lg bg-accent text-black hover:bg-accent/90 hover:scale-[1.02] transition-all duration-300 shadow-lg shadow-primary/20 group min-w-[200px] hover:scale-105"
           >
             Go to App
             <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
@@ -117,7 +108,7 @@ function Hero({ onStartFocusing, onLearnMore }: HeroSectionProps) {
             onClick={onLearnMore}
             variant="outline"
             size="lg"
-            className="rounded-full px-10 py-7 text-lg border-accent/30 hover:text-accent/80 hover:border-accent/60 hover:bg-card/5 transition-all duration-300 min-w-[200px]"
+            className="rounded-full px-10 py-7 text-lg border-accent/30 hover:text-accent/80 hover:scale-105 hover:border-accent/60 hover:bg-card/5 transition-all duration-300 min-w-[200px]"
           >
             Learn More
           </Button>
