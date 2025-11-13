@@ -14,7 +14,14 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "../ui/drawer";
-import { Bar, BarChart, ResponsiveContainer } from "recharts";
+import {
+  Bar,
+  BarChart,
+  Cell,
+  ResponsiveContainer,
+  XAxis,
+  YAxis,
+} from "recharts";
 
 const Fucus = ({
   time,
@@ -131,7 +138,10 @@ const Fucus = ({
           />
           <Drawer>
             <DrawerTrigger asChild>
-              <Button className="rounded-xl self-center px-8 hover:bg-primary/80">
+              <Button
+                variant={"outline"}
+                className="rounded-xl self-center px-8 hover:bg-primary/80"
+              >
                 Custom
               </Button>
             </DrawerTrigger>
@@ -213,17 +223,33 @@ const DrawerFocusTime = memo(
               <Plus className="h-5 w-5" />
             </Button>
           </div>
-          <div className="mt-3 h-[120px] border-0">
-            <ResponsiveContainer width="100%" height="100%">
+          <div className="mt-3 h-[120px] border-0 outline-0">
+            <ResponsiveContainer
+              width="100%"
+              height="100%"
+              className="outline-0"
+            >
               <BarChart data={timeOptionsData}>
+                <XAxis hide={true} />
+                <YAxis hide={true} />
                 <Bar
                   dataKey="value"
                   onClick={(e) => {
                     const val = Array.isArray(e.value) ? e.value[0] : e.value;
                     setNewSessionLength(val);
                   }}
-                  className="bg-primary"
-                />
+                  fill="#1f1f1f"
+                >
+                  {timeOptionsData.map((entry, index) => (
+                    <Cell
+                      key={`cell-${index}`}
+                      fill={
+                        entry.value === newSessionLength ? "#3b82f6" : "#1f1f1f"
+                      }
+                      className="cursor-pointer"
+                    />
+                  ))}
+                </Bar>
               </BarChart>
             </ResponsiveContainer>
           </div>
