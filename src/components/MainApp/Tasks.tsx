@@ -9,6 +9,7 @@ import { motion, AnimatePresence } from "motion/react";
 import { toast } from "sonner";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 import { Checkbox } from "../ui/checkbox";
+import { Progress } from "@/components/ui/progress";
 
 interface TasksComponentProps {
   tasks: TaskProps[];
@@ -124,6 +125,16 @@ const Tasks = ({ tasks, setTasks }: TasksComponentProps) => {
               <p className="text-[11px] text-muted-foreground">
                 {completedTasks.length} of {tasks.length} completed
               </p>
+              <div className="w-2/5">
+                <Progress
+                  className=""
+                  value={
+                    tasks.length === 0
+                      ? 0
+                      : (completedTasks.length / tasks.length) * 100
+                  }
+                />
+              </div>
             </div>
           </>
         )}
