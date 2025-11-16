@@ -44,7 +44,12 @@ function App() {
           <Route path="/" index element={<Home />} />
           <Route path="*" element={<NotFound />} />
         </Route>
-        <Route path="/app" element={<MainApp />} />
+        <Route
+          path="/app"
+          element={
+            <MainApp darkMode={isDarkMode} setDarkMode={handleThemeToggle} />
+          }
+        />
       </Routes>
     </>
   );

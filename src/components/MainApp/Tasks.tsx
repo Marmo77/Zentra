@@ -9,6 +9,8 @@ import { motion, AnimatePresence } from "motion/react";
 import { toast } from "sonner";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 import { Checkbox } from "../ui/checkbox";
+import { Progress } from "@/components/ui/progress";
+import { ScrollArea } from "../ui/scroll-area";
 
 interface TasksComponentProps {
   tasks: TaskProps[];
@@ -51,8 +53,6 @@ const Tasks = ({ tasks, setTasks }: TasksComponentProps) => {
     },
   ];
 
-  const activeTasks = tasks.filter((task) => !task.isCompleted);
-
   const handleAddTask = () => {
     if (!validTask()) return;
 
@@ -83,9 +83,7 @@ const Tasks = ({ tasks, setTasks }: TasksComponentProps) => {
       <CardContent className="px-6 flex flex-col gap-6">
         <div className="flex items-center justify-between">
           <h1 className="tracking-wide">Tasks</h1>
-          <p className="text-sm text-muted-foreground">
-            {activeTasks.length} active
-          </p>
+          <p className="text-sm text-muted-foreground">{tasks.length} active</p>
         </div>
         <div className="flex gap-1 items-center px-1">
           <Input
@@ -108,22 +106,34 @@ const Tasks = ({ tasks, setTasks }: TasksComponentProps) => {
           </div>
         ) : (
           <>
-            <div className="flex flex-col gap-2">
-              <AnimatePresence>
-                {tasks.map((task) => (
-                  <Task
-                    key={task.id}
-                    task={task}
-                    handleCheck={handleCheck}
-                    deleteTask={handleDeleteTask}
-                  />
-                ))}
-              </AnimatePresence>
-            </div>
+            <ScrollArea className="flex max-h-96 flex-col">
+              <div className="flex flex-col space-y-2 hmr-3">
+                <AnimatePresence>
+                  {tasks.map((task) => (
+                    <Task
+                      key={task.id}
+                      task={task}
+                      handleCheck={handleCheck}
+                      deleteTask={handleDeleteTask}
+                    />
+                  ))}
+                </AnimatePresence>
+              </div>
+            </ScrollArea>
             <div className="flex items-center justify-between px-1">
               <p className="text-[11px] text-muted-foreground">
                 {completedTasks.length} of {tasks.length} completed
               </p>
+              <div className="w-2/5">
+                <Progress
+                  className=""
+                  value={
+                    tasks.length === 0
+                      ? 0
+                      : (completedTasks.length / tasks.length) * 100
+                  }
+                />
+              </div>
             </div>
           </>
         )}
