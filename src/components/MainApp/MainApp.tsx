@@ -25,6 +25,14 @@ const MainApp = ({
   console.log(darkMode);
 
   useEffect(() => {
+    if (localStorage.getItem("userSettings") === null) {
+      localStorage.setItem("userSettings", JSON.stringify(userSettings));
+    } else {
+      setUserSettings(JSON.parse(localStorage.getItem("userSettings") || "{}"));
+    }
+  }, []);
+
+  useEffect(() => {
     if (userSettings.saveToLocalStorage) {
       localStorage.setItem("tasks", JSON.stringify(tasks));
     } else {
@@ -69,7 +77,12 @@ const MainApp = ({
         }}
         className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-primary/20 rounded-full blur-[120px] inset-0 overflow-hidden pointer-events-none"
       />
-      <FocusNav darkMode={darkMode} setDarkMode={setDarkMode} />
+      <FocusNav
+        darkMode={darkMode}
+        setDarkMode={setDarkMode}
+        userSettings={userSettings}
+        setUserSettings={setUserSettings}
+      />
       <div className="max-w-7xl mx-auto px-6">
         {/* DESKTOP */}
         <div className="hidden lg:grid lg:grid-cols-[320px_1fr_320px] gap-8 items-start">

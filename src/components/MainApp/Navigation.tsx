@@ -4,13 +4,18 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
 import SettingsFocus from "./SettingsFocus";
+import type { UserSettings } from "@/types/types";
 
 const Navigation = ({
   darkMode,
   setDarkMode,
+  userSettings,
+  setUserSettings,
 }: {
   darkMode: boolean;
   setDarkMode: React.Dispatch<React.SetStateAction<boolean>>;
+  userSettings: UserSettings;
+  setUserSettings: React.Dispatch<React.SetStateAction<UserSettings>>;
 }) => {
   const navigate = useNavigate();
   const [currentTime, setCurrentTime] = useState(new Date());
@@ -58,7 +63,12 @@ const Navigation = ({
               </div>
             </SheetTrigger>
             <SheetContent>
-              <SettingsFocus darkMode={darkMode} setDarkMode={setDarkMode} />
+              <SettingsFocus
+                darkMode={darkMode}
+                setDarkMode={setDarkMode}
+                userSettings={userSettings}
+                setUserSettings={setUserSettings}
+              />
             </SheetContent>
           </Sheet>
         </div>
