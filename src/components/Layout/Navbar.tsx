@@ -44,7 +44,7 @@ const Navbar = ({ isDarkMode, onThemeToggle }: NavbarProps) => {
 
           {/* Theme Toggle Button */}
           <Button
-            variant="ghost"
+            variant="navigationMode"
             size="icon"
             onClick={onThemeToggle}
             className="rounded-full w-10 h-10"
