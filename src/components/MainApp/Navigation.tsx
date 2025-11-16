@@ -2,8 +2,16 @@ import { AppConstants } from "@/data/constants";
 import { Settings, Timer } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
+import SettingsFocus from "./SettingsFocus";
 
-const Navigation = () => {
+const Navigation = ({
+  darkMode,
+  setDarkMode,
+}: {
+  darkMode: boolean;
+  setDarkMode: React.Dispatch<React.SetStateAction<boolean>>;
+}) => {
   const navigate = useNavigate();
   const [currentTime, setCurrentTime] = useState(new Date());
 
@@ -43,9 +51,16 @@ const Navigation = () => {
           <span className="text-sm text-muted-foreground hidden sm:block">
             {formattedTime}
           </span>
-          <div className="w-7 h-7 hover:bg-muted-foreground/10 duration-300 transition-colors flex items-center justify-center rounded-full cursor-pointer">
-            <Settings className="h-4 w-4 text-muted-foreground" />
-          </div>
+          <Sheet>
+            <SheetTrigger asChild>
+              <div className="w-8 h-8 hover:bg-muted-foreground/10 duration-300 transition-colors flex items-center justify-center rounded-full cursor-pointer">
+                <Settings className="h-4 w-4 text-muted-foreground" />
+              </div>
+            </SheetTrigger>
+            <SheetContent>
+              <SettingsFocus darkMode={darkMode} setDarkMode={setDarkMode} />
+            </SheetContent>
+          </Sheet>
         </div>
       </div>
     </section>

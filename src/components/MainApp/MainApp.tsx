@@ -6,7 +6,13 @@ import Tasks from "./Tasks";
 import { motion } from "motion/react";
 import type { TaskProps, UserSettings } from "@/types/types";
 
-const MainApp = () => {
+const MainApp = ({
+  darkMode,
+  setDarkMode,
+}: {
+  darkMode: boolean;
+  setDarkMode: React.Dispatch<React.SetStateAction<boolean>>;
+}) => {
   const [tasks, setTasks] = useState<TaskProps[]>(
     JSON.parse(localStorage.getItem("tasks") || "[]")
   );
@@ -15,6 +21,8 @@ const MainApp = () => {
     saveToLocalStorage: true,
     saveTime: true,
   });
+
+  console.log(darkMode);
 
   useEffect(() => {
     if (userSettings.saveToLocalStorage) {
@@ -61,7 +69,7 @@ const MainApp = () => {
         }}
         className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-primary/20 rounded-full blur-[120px] inset-0 overflow-hidden pointer-events-none"
       />
-      <FocusNav />
+      <FocusNav darkMode={darkMode} setDarkMode={setDarkMode} />
       <div className="max-w-7xl mx-auto px-6">
         {/* DESKTOP */}
         <div className="hidden lg:grid lg:grid-cols-[320px_1fr_320px] gap-8 items-start">

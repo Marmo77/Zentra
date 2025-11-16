@@ -232,6 +232,7 @@ const DrawerFocusTime = memo(
               <BarChart data={timeOptionsData}>
                 <XAxis hide={true} />
                 <YAxis hide={true} />
+
                 <Bar
                   dataKey="value"
                   onClick={(e) => {
