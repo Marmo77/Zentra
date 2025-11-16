@@ -1,10 +1,12 @@
 import { SheetDescription, SheetHeader, SheetTitle } from "../ui/sheet";
 import { AppConstants } from "@/data/constants";
-import { ClipboardCheck, Clock10, Moon } from "lucide-react";
+import { ClipboardCheck, Clock10, Home, Moon } from "lucide-react";
 import { Switch } from "../ui/switch";
 import { Label } from "../ui/label";
 import type { UserSettings } from "@/types/types";
 import { useEffect } from "react";
+import { Button } from "../ui/button";
+import { useNavigate } from "react-router-dom";
 
 const SettingsFocus = ({
   darkMode,
@@ -60,9 +62,7 @@ const SettingsFocus = ({
           handleSaveTimeToggle={handleSaveTimeToggle}
         />
         {/* Navigation */}
-        <div className="flex flex-col">
-          <h3 className="text-lg font-light">Navigation</h3>
-        </div>
+        <Navigation />
       </div>
     </SheetHeader>
   );
@@ -164,7 +164,29 @@ const DataStorage = ({
 };
 
 const Navigation = () => {
-  return <div></div>;
+  const navigate = useNavigate();
+
+  const handleNavigate = () => {
+    navigate("/");
+  };
+
+  return (
+    <div className="flex flex-col">
+      <h3 className="text-lg font-light mb-2">Navigation</h3>
+      <div className="flex flex-col gap-4">
+        <Button
+          variant={"outline"}
+          className="flex justify-start"
+          onClick={handleNavigate}
+        >
+          <div className="flex items-center gap-2">
+            <Home />
+            <p>Home</p>
+          </div>
+        </Button>
+      </div>
+    </div>
+  );
 };
 
 export default SettingsFocus;
