@@ -133,6 +133,7 @@ const DataStorage = ({
         </Label>
         <div>
           <Switch
+            className="cursor-pointer"
             id="save-tasks"
             checked={userSettings.saveToLocalStorage}
             onCheckedChange={handleLocalStorageToggle}
@@ -153,6 +154,7 @@ const DataStorage = ({
         </Label>
         <div>
           <Switch
+            className="cursor-pointer"
             id="save-time"
             checked={userSettings.saveTime}
             onCheckedChange={handleSaveTimeToggle}
