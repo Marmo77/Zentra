@@ -24,7 +24,8 @@ const Home = () => {
   }, [location]);
 
   const onLearnMore = () => {
-    return;
+    const learnSec = "#about";
+    navigate("/", { state: { scrollTo: learnSec } });
   };
 
   return (
