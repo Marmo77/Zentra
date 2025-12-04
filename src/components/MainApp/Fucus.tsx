@@ -143,7 +143,7 @@ const Fucus = ({
         </p>
         <div className="flex flex-col gap-3">
           <SessionLength
-            time={time}
+            // time={time}
             lastSessionLength={lastSessionLength.toString()}
             handleSession={handleSessionLengthSelect}
           />
@@ -330,62 +330,22 @@ const SessionLength = memo(
   ({
     lastSessionLength,
     handleSession,
-    time,
-  }: {
+  }: // time,
+  {
     lastSessionLength: string;
     handleSession: (value: string) => void;
-    time: number;
+    // time: number;
   }) => {
     const sessionLength = timeOptions;
 
-    const [VerifyTime, setVerifyTime] = useState<boolean>(false);
-    //If time moves (true), then show question: "Do you want to change your time (passed will be deleted)"
-    useEffect(() => {
-      setVerifyTime(time != Number(lastSessionLength) * 60);
-      // False - same as the setted time, True - if time goes
-    }, [time]);
+    // const [VerifyTime, setVerifyTime] = useState<boolean>(false);
+    // //If time moves (true), then show question: "Do you want to change your time (passed will be deleted)"
+    // useEffect(() => {
+    //   setVerifyTime(time != Number(lastSessionLength) * 60);
+    //   // False - same as the setted time, True - if time goes
+    // }, [time]);
 
-    return VerifyTime ? (
-      // If time passed this is a variant that is used
-      <Dialog>
-        <div className="flex bg-card mt-2 rounded-2xl">
-          {sessionLength.map((option) => (
-            <>
-              <DialogTrigger asChild>
-                <Button
-                  variant={"focusTime"}
-                  key={option.value}
-                  className={`hover:bg-primary/80 cursor-pointer first:rounded-l-2xl last:rounded-r-2xl py-2 px-6 ${
-                    option.value.toString() === lastSessionLength
-                      ? "bg-primary text-card"
-                      : ""
-                  }`}
-                  onClick={() => handleSession(option.value.toString())}
-                >
-                  <p>{option.label}</p>
-                </Button>
-              </DialogTrigger>
-              <DialogContent className="sm:max-w-[425px]">
-                <DialogHeader>
-                  <DialogTitle>
-                    Do you want to change your session Length?
-                  </DialogTitle>
-                  <DialogContent>
-                    Time that has passed will be restarted.
-                  </DialogContent>
-                </DialogHeader>
-                <DialogFooter>
-                  <DialogClose asChild>
-                    <Button variant="outline">Cancel</Button>
-                  </DialogClose>
-                  <Button variant="secondary">Save changes</Button>
-                </DialogFooter>
-              </DialogContent>
-            </>
-          ))}
-        </div>
-      </Dialog>
-    ) : (
+    return (
       <div>
         <div className="flex bg-card mt-2 rounded-2xl">
           {sessionLength.map((option) => (
