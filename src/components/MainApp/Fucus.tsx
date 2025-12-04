@@ -22,6 +22,15 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "../ui/dialog";
 
 const Fucus = ({
   time,
@@ -127,12 +136,14 @@ const Fucus = ({
           </Button>
         </motion.div>
       </div>
+      {/* SESSION LENGHTS */}
       <div>
         <p className="text-muted-foreground font-semibold text-sm">
           Session length
         </p>
         <div className="flex flex-col gap-3">
           <SessionLength
+            // time={time}
             lastSessionLength={lastSessionLength.toString()}
             handleSession={handleSessionLengthSelect}
           />
@@ -319,11 +330,20 @@ const SessionLength = memo(
   ({
     lastSessionLength,
     handleSession,
-  }: {
+  }: // time,
+  {
     lastSessionLength: string;
     handleSession: (value: string) => void;
+    // time: number;
   }) => {
     const sessionLength = timeOptions;
+
+    // const [VerifyTime, setVerifyTime] = useState<boolean>(false);
+    // //If time moves (true), then show question: "Do you want to change your time (passed will be deleted)"
+    // useEffect(() => {
+    //   setVerifyTime(time != Number(lastSessionLength) * 60);
+    //   // False - same as the setted time, True - if time goes
+    // }, [time]);
 
     return (
       <div>
