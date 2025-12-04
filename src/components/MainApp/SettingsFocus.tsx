@@ -91,6 +91,7 @@ const Appearance = ({
         </Label>
         <div>
           <Switch
+            className="cursor-pointer"
             id="dark-mode"
             checked={darkMode}
             onCheckedChange={setDarkMode}
