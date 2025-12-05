@@ -12,7 +12,7 @@ import { Button } from "../ui/button";
 import { motion } from "motion/react";
 import { Slider } from "../ui/slider";
 import { toast } from "sonner";
-import type { Environment } from "@/types/types";
+import type { Environment, UserSettings } from "@/types/types";
 
 type AmbientSoundsElementsProps = {
   id: Environment;
@@ -20,30 +20,37 @@ type AmbientSoundsElementsProps = {
   label: string;
   color: string;
 };
-function AmbientSounds() {
-  const [selectedSound, setSelectedSound] = useState<Environment>(null);
-  const [isMuted, setIsMuted] = useState(true);
-  const [volume, setVolume] = useState<number[]>([50]);
+function AmbientSounds({
+  userSettings,
+  setUserSettings,
+}: {
+  userSettings: UserSettings;
+  setUserSettings: React.Dispatch<React.SetStateAction<UserSettings>>;
+}) {
+  const [selectedSound, setSelectedSound] = useState<Environment>(
+    userSettings.ambientSounds.environment || null
+  );
+  const [isMuted, setIsMuted] = useState(
+    userSettings.ambientSounds.isMuted || false
+  );
+  const [volume, setVolume] = useState<number[]>([
+    userSettings.ambientSounds.volume || 0,
+  ]);
 
-  // load saved prefrences
-  useEffect(() => {
-    const savedEnv = localStorage.getItem("fr-environment");
-    const savedVolume = localStorage.getItem("fr-volume");
-    const savedMuted = localStorage.getItem("fr-muted");
-
-    if (savedEnv) setSelectedSound(savedEnv as Environment);
-    if (savedVolume) setVolume([parseInt(savedVolume)]);
-    if (savedMuted) setIsMuted(savedMuted === "true");
-  }, []);
+  // load saved prefrences (user settings)
 
   // save prefrences
   useEffect(() => {
-    if (selectedSound) {
-      localStorage.setItem("fr-environment", selectedSound);
-    }
-    localStorage.setItem("fr-volume", volume[0].toString());
-    localStorage.setItem("fr-muted", isMuted.toString());
-  }, [selectedSound, volume, isMuted]);
+    // const saved = userSettings.ambientSounds;
+    setUserSettings({
+      ...userSettings,
+      ambientSounds: {
+        environment: selectedSound,
+        volume: volume[0],
+        isMuted: isMuted,
+      },
+    });
+  }, [selectedSound, volume, isMuted, userSettings.ambientSounds.environment]);
 
   const AmbietSoundsElements: AmbientSoundsElementsProps[] = [
     { id: "rain", icon: CloudRainWind, label: "Rain", color: "#7dd3fc" },

@@ -17,7 +17,7 @@ const buttonVariants = cva(
         secondary:
           "bg-secondary text-secondary-foreground hover:bg-secondary/80",
         ghost: "hover:bg-red-400 dark:hover:bg-red-400/50",
-        ambient: "hover:border-border border border-card h-8",
+        ambient: "border border-card h-8",
         link: "text-primary underline-offset-4 hover:underline",
         focusTime: "text-card-foreground",
         navigationMode: "hover:bg-[#7dd4fc80] dark:hover:bg-accent/50",

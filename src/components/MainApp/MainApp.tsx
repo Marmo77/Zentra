@@ -119,7 +119,10 @@ const MainApp = ({
           <Inspiration />
         </div>
       </div>
-      <AmbientSounds />
+      <AmbientSounds
+        userSettings={userSettings}
+        setUserSettings={setUserSettings}
+      />
     </section>
   );
 };
