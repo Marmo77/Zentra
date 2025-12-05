@@ -26,6 +26,26 @@ function AmbientSounds() {
   const [isMuted, setIsMuted] = useState(true);
   const [volume, setVolume] = useState<number[]>([50]);
 
+  // load saved prefrences
+  useEffect(() => {
+    const savedEnv = localStorage.getItem("fr-environment");
+    const savedVolume = localStorage.getItem("fr-volume");
+    const savedMuted = localStorage.getItem("fr-muted");
+
+    if (savedEnv) setSelectedSound(savedEnv as Environment);
+    if (savedVolume) setVolume([parseInt(savedVolume)]);
+    if (savedMuted) setIsMuted(savedMuted === "true");
+  }, []);
+
+  // save prefrences
+  useEffect(() => {
+    if (selectedSound) {
+      localStorage.setItem("fr-environment", selectedSound);
+    }
+    localStorage.setItem("fr-volume", volume[0].toString());
+    localStorage.setItem("fr-muted", isMuted.toString());
+  }, [selectedSound, volume, isMuted]);
+
   const AmbietSoundsElements: AmbientSoundsElementsProps[] = [
     { id: "rain", icon: CloudRainWind, label: "Rain", color: "#7dd3fc" },
     { id: "forest", icon: Trees, label: "Forest", color: "#4ade80" },
@@ -51,6 +71,8 @@ function AmbientSounds() {
       // play sound
     }
   };
+  // check if volume is on/off if off then toast that user needs to select sound
+
   const checkMuted = () => {
     if (!selectedSound) {
       toast.info("Please select sound", {
@@ -67,10 +89,6 @@ function AmbientSounds() {
       });
     }
   };
-  // check if volume is on/off if off then toast that user needs to select sound
-  // useEffect(() => {
-
-  // }, [volume]);
 
   return (
     <div className="flex flex-col md:fixed bottom-0 left-0 z-10 py-2 mt-12 w-full bg-card/80 border-border/50 border-t border-x-0 border-b-0">
