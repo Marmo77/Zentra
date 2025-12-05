@@ -5,6 +5,7 @@ import FocusNav from "./Navigation";
 import Tasks from "./Tasks";
 import { motion } from "motion/react";
 import type { TaskProps, UserSettings } from "@/types/types";
+import AmbientSounds from "./AmbientSounds";
 
 const MainApp = ({
   darkMode,
@@ -101,7 +102,7 @@ const MainApp = ({
           </div>
         </div>
         {/* MOBILE */}
-        <div className="lg:hidden flex flex-col justify-center space-y-6 p-6">
+        <div className="lg:hidden flex flex-col justify-center space-y-6 pb-12 p-6">
           <Fucus
             time={time}
             isRunning={isRunning}
@@ -113,6 +114,7 @@ const MainApp = ({
           <Inspiration />
         </div>
       </div>
+      <AmbientSounds />
     </section>
   );
 };

@@ -57,7 +57,7 @@ const SettingsFocus = ({
         {/* Data Storage */}
         <DataStorage
           userSettings={userSettings}
-          setUserSettings={setUserSettings}
+          // setUserSettings={setUserSettings}
           handleLocalStorageToggle={handleLocalStorageToggle}
           handleSaveTimeToggle={handleSaveTimeToggle}
         />
@@ -104,12 +104,10 @@ const Appearance = ({
 
 const DataStorage = ({
   userSettings,
-  setUserSettings,
   handleLocalStorageToggle,
   handleSaveTimeToggle,
 }: {
   userSettings: UserSettings;
-  setUserSettings: React.Dispatch<React.SetStateAction<UserSettings>>;
   handleLocalStorageToggle: () => void;
   handleSaveTimeToggle: () => void;
 }) => {
