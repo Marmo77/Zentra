@@ -12,8 +12,7 @@ import { Button } from "../ui/button";
 import { motion } from "motion/react";
 import { Slider } from "../ui/slider";
 import { toast } from "sonner";
-
-type Environment = "rain" | "forest" | "night" | "cafe" | "ocean" | null;
+import type { Environment } from "@/types/types";
 
 type AmbientSoundsElementsProps = {
   id: Environment;

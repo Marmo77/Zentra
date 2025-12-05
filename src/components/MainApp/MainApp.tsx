@@ -4,7 +4,7 @@ import Inspiration from "./Inspiration";
 import FocusNav from "./Navigation";
 import Tasks from "./Tasks";
 import { motion } from "motion/react";
-import type { TaskProps, UserSettings } from "@/types/types";
+import type { Environment, TaskProps, UserSettings } from "@/types/types";
 import AmbientSounds from "./AmbientSounds";
 
 const MainApp = ({
@@ -21,9 +21,14 @@ const MainApp = ({
   const [userSettings, setUserSettings] = useState<UserSettings>({
     saveToLocalStorage: true,
     saveTime: true,
+    ambientSounds: {
+      isMuted: true,
+      environment: null,
+      volume: 50,
+    },
   });
 
-  console.log(darkMode);
+  // console.log(darkMode);
 
   useEffect(() => {
     if (localStorage.getItem("userSettings") === null) {
