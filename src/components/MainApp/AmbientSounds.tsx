@@ -7,12 +7,13 @@ import {
   VolumeX,
   Waves,
 } from "lucide-react";
-import React from "react";
+import React, { useEffect } from "react";
 import { Button } from "../ui/button";
 import { motion } from "motion/react";
 import { Slider } from "../ui/slider";
 import { toast } from "sonner";
 import type { AmbinetSounds, Environment } from "@/types/types";
+import { useAmbientAudio } from "@/hooks/useAmbientAudio";
 
 type AmbientSoundsElementsProps = {
   id: Environment;
@@ -28,6 +29,13 @@ function AmbientSounds({
   ambientSounds: AmbinetSounds;
   setAmbientSounds: React.Dispatch<React.SetStateAction<AmbinetSounds>>;
 }) {
+  // MUSIC
+  useAmbientAudio(
+    ambientSounds.environment,
+    ambientSounds.isMuted,
+    ambientSounds.volume
+  );
+
   const AmbientSoundsElements: AmbientSoundsElementsProps[] = [
     { id: "rain", icon: CloudRainWind, label: "Rain", color: "#7dd3fc" },
     { id: "forest", icon: Trees, label: "Forest", color: "#4ade80" },
