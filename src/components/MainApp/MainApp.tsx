@@ -4,7 +4,8 @@ import Inspiration from "./Inspiration";
 import FocusNav from "./Navigation";
 import Tasks from "./Tasks";
 import { motion } from "motion/react";
-import type { TaskProps, UserSettings } from "@/types/types";
+import type { Environment, TaskProps, UserSettings } from "@/types/types";
+import AmbientSounds from "./AmbientSounds";
 
 const MainApp = ({
   darkMode,
@@ -20,17 +21,25 @@ const MainApp = ({
   const [userSettings, setUserSettings] = useState<UserSettings>({
     saveToLocalStorage: true,
     saveTime: true,
+    ambientSounds: {
+      isMuted: true,
+      environment: null,
+      volume: 50,
+    },
   });
 
-  console.log(darkMode);
-
+  // Load userSettings from localStorage
   useEffect(() => {
-    if (localStorage.getItem("userSettings") === null) {
-      localStorage.setItem("userSettings", JSON.stringify(userSettings));
-    } else {
-      setUserSettings(JSON.parse(localStorage.getItem("userSettings") || "{}"));
+    const savedSettings = localStorage.getItem("userSettings");
+    if (savedSettings) {
+      setUserSettings(JSON.parse(savedSettings));
     }
   }, []);
+
+  // Save userSettings to localStorage whenever it changes
+  useEffect(() => {
+    localStorage.setItem("userSettings", JSON.stringify(userSettings));
+  }, [userSettings]);
 
   useEffect(() => {
     if (userSettings.saveToLocalStorage) {
@@ -101,7 +110,7 @@ const MainApp = ({
           </div>
         </div>
         {/* MOBILE */}
-        <div className="lg:hidden flex flex-col justify-center space-y-6 p-6">
+        <div className="lg:hidden flex flex-col justify-center space-y-6 pb-12 p-6">
           <Fucus
             time={time}
             isRunning={isRunning}
@@ -113,6 +122,10 @@ const MainApp = ({
           <Inspiration />
         </div>
       </div>
+      <AmbientSounds
+        userSettings={userSettings}
+        setUserSettings={setUserSettings}
+      />
     </section>
   );
 };

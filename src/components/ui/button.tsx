@@ -17,6 +17,7 @@ const buttonVariants = cva(
         secondary:
           "bg-secondary text-secondary-foreground hover:bg-secondary/80",
         ghost: "hover:bg-red-400 dark:hover:bg-red-400/50",
+        ambient: "border border-card h-8",
         link: "text-primary underline-offset-4 hover:underline",
         focusTime: "text-card-foreground",
         navigationMode: "hover:bg-[#7dd4fc80] dark:hover:bg-accent/50",
@@ -25,6 +26,7 @@ const buttonVariants = cva(
         default: "h-9 px-4 py-2 has-[>svg]:px-3",
         sm: "h-8 rounded-md gap-1.5 px-3 has-[>svg]:px-2.5",
         lg: "h-10 rounded-lg px-8 has-[>svg]:px-6",
+        ambient: "h-9 px-6 has-[>svg]:px-5",
         icon: "size-9",
         "icon-sm": "size-8",
         "icon-lg": "size-10",

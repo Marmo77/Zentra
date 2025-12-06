@@ -21,7 +21,11 @@ const SettingsFocus = ({
 }) => {
   useEffect(() => {
     localStorage.setItem("userSettings", JSON.stringify(userSettings));
-  }, [userSettings.saveToLocalStorage, userSettings.saveTime]);
+  }, [
+    userSettings.saveToLocalStorage,
+    userSettings.saveTime,
+    userSettings.ambientSounds,
+  ]);
 
   const handleLocalStorageToggle = () => {
     setUserSettings({
@@ -38,9 +42,20 @@ const SettingsFocus = ({
     localStorage.setItem("userSettings", JSON.stringify(userSettings));
   };
 
+  const handleAmientSoundsToggle = () => {
+    // setUserSettings({
+    // ...userSettings,
+    // ambientSounds: {
+    //   ...userSettings.ambientSounds,
+    //   isMuted: !userSettings.ambientSounds.isMuted,
+    // },
+    // });
+    console.log(JSON.stringify(userSettings));
+  };
+
   return (
     <SheetHeader>
-      <SheetTitle>
+      <SheetTitle onClick={handleAmientSoundsToggle}>
         <h1 className="text-xl font-light">Settings</h1>
         <SheetDescription>
           <p className="text-sm font-medium text-muted-foreground">
@@ -57,7 +72,7 @@ const SettingsFocus = ({
         {/* Data Storage */}
         <DataStorage
           userSettings={userSettings}
-          setUserSettings={setUserSettings}
+          // setUserSettings={setUserSettings}
           handleLocalStorageToggle={handleLocalStorageToggle}
           handleSaveTimeToggle={handleSaveTimeToggle}
         />
@@ -104,12 +119,10 @@ const Appearance = ({
 
 const DataStorage = ({
   userSettings,
-  setUserSettings,
   handleLocalStorageToggle,
   handleSaveTimeToggle,
 }: {
   userSettings: UserSettings;
-  setUserSettings: React.Dispatch<React.SetStateAction<UserSettings>>;
   handleLocalStorageToggle: () => void;
   handleSaveTimeToggle: () => void;
 }) => {
@@ -165,6 +178,8 @@ const DataStorage = ({
     </div>
   );
 };
+
+// const Sounds = ()
 
 const Navigation = () => {
   const navigate = useNavigate();

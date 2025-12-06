@@ -22,15 +22,6 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "../ui/dialog";
 
 const Fucus = ({
   time,
