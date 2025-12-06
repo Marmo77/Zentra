@@ -7,12 +7,12 @@ import {
   VolumeX,
   Waves,
 } from "lucide-react";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Button } from "../ui/button";
 import { motion } from "motion/react";
 import { Slider } from "../ui/slider";
 import { toast } from "sonner";
-import type { Environment, UserSettings } from "@/types/types";
+import type { AmbinetSounds, Environment } from "@/types/types";
 
 type AmbientSoundsElementsProps = {
   id: Environment;
@@ -22,43 +22,12 @@ type AmbientSoundsElementsProps = {
 };
 
 function AmbientSounds({
-  userSettings,
-  setUserSettings,
+  ambientSounds,
+  setAmbientSounds,
 }: {
-  userSettings: UserSettings;
-  setUserSettings: React.Dispatch<React.SetStateAction<UserSettings>>;
+  ambientSounds: AmbinetSounds;
+  setAmbientSounds: React.Dispatch<React.SetStateAction<AmbinetSounds>>;
 }) {
-  const [selectedSound, setSelectedSound] = useState<Environment>(
-    userSettings.ambientSounds.environment
-  );
-  const [isMuted, setIsMuted] = useState(userSettings.ambientSounds.isMuted);
-  const [volume, setVolume] = useState<number[]>([
-    userSettings.ambientSounds.volume,
-  ]);
-
-  // Sync local state when userSettings prop changes
-  useEffect(() => {
-    setSelectedSound(userSettings.ambientSounds.environment);
-    setIsMuted(userSettings.ambientSounds.isMuted);
-    setVolume([userSettings.ambientSounds.volume]);
-  }, [
-    userSettings.ambientSounds.environment,
-    userSettings.ambientSounds.isMuted,
-    userSettings.ambientSounds.volume,
-  ]);
-
-  // Save local state changes to parent
-  useEffect(() => {
-    setUserSettings((prev) => ({
-      ...prev,
-      ambientSounds: {
-        environment: selectedSound,
-        volume: volume[0],
-        isMuted: isMuted,
-      },
-    }));
-  }, [selectedSound, volume, isMuted, setUserSettings]);
-
   const AmbientSoundsElements: AmbientSoundsElementsProps[] = [
     { id: "rain", icon: CloudRainWind, label: "Rain", color: "#7dd3fc" },
     { id: "forest", icon: Trees, label: "Forest", color: "#4ade80" },
@@ -67,34 +36,44 @@ function AmbientSounds({
     { id: "ocean", icon: Waves, label: "Ocean", color: "#38bdf8" },
   ];
 
-  const ToggleEnvironment = (elem: Environment) => {
-    if (selectedSound === elem) {
-      setSelectedSound(null);
-      setIsMuted(true);
+  const toggleEnvironment = (elem: Environment) => {
+    if (ambientSounds.environment === elem) {
+      setAmbientSounds({
+        ...ambientSounds,
+        environment: null,
+        isMuted: true,
+      });
     } else {
-      setSelectedSound(elem);
-      setIsMuted(false);
+      setAmbientSounds({
+        ...ambientSounds,
+        environment: elem,
+        isMuted: false,
+      });
     }
   };
 
   const toggleMuted = () => {
-    const newMutedState = !isMuted;
-    setIsMuted(newMutedState);
-    if (newMutedState) {
-      // stop sounds
-    } else if (selectedSound) {
-      // play sound
-    }
+    setAmbientSounds({
+      ...ambientSounds,
+      isMuted: !ambientSounds.isMuted,
+    });
+  };
+
+  const handleVolumeChange = (newVolume: number[]) => {
+    setAmbientSounds({
+      ...ambientSounds,
+      volume: newVolume[0],
+    });
   };
 
   const checkMuted = () => {
-    if (!selectedSound) {
+    if (!ambientSounds.environment) {
       toast.info("Please select sound", {
         richColors: true,
         duration: 3000,
         dismissible: true,
       });
-    } else if (isMuted) {
+    } else if (ambientSounds.isMuted) {
       toast.error("Please unmute!", {
         richColors: true,
         duration: 3000,
@@ -112,7 +91,7 @@ function AmbientSounds({
           <div className="flex gap-4">
             {AmbientSoundsElements.map((elem) => {
               const Icon = elem.icon;
-              const isActive = selectedSound === elem.id;
+              const isActive = ambientSounds.environment === elem.id;
               return (
                 <motion.div key={elem.id} whileTap={{ scale: 0.95 }}>
                   <Button
@@ -123,7 +102,7 @@ function AmbientSounds({
                     }`}
                     size={"ambient"}
                     variant={"ambient"}
-                    onClick={() => ToggleEnvironment(elem.id)}
+                    onClick={() => toggleEnvironment(elem.id)}
                   >
                     <Icon className="w-5 h-5 sm:mr-2" />
                     <h4 className="text-sm font-medium">{elem.label}</h4>
@@ -140,11 +119,11 @@ function AmbientSounds({
             onClick={checkMuted}
           >
             <Slider
-              value={volume}
-              onValueChange={setVolume}
+              value={[ambientSounds.volume]}
+              onValueChange={handleVolumeChange}
               max={100}
               step={1}
-              disabled={isMuted || !selectedSound}
+              disabled={ambientSounds.isMuted || !ambientSounds.environment}
               className="flex-1"
             />
           </div>
@@ -152,10 +131,10 @@ function AmbientSounds({
             variant="ambient"
             size="icon"
             onClick={toggleMuted}
-            disabled={!selectedSound}
+            disabled={!ambientSounds.environment}
             className="rounded-full"
           >
-            {isMuted || !selectedSound ? (
+            {ambientSounds.isMuted || !ambientSounds.environment ? (
               <VolumeX className="h-5 w-5" />
             ) : (
               <Volume2 className="h-5 w-5" />

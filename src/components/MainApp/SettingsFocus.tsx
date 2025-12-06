@@ -1,6 +1,6 @@
 import { SheetDescription, SheetHeader, SheetTitle } from "../ui/sheet";
 import { AppConstants } from "@/data/constants";
-import { ClipboardCheck, Clock10, Home, Moon } from "lucide-react";
+import { ClipboardCheck, Clock10, Home, Moon, Music4Icon } from "lucide-react";
 import { Switch } from "../ui/switch";
 import { Label } from "../ui/label";
 import type { UserSettings } from "@/types/types";
@@ -24,7 +24,7 @@ const SettingsFocus = ({
   }, [
     userSettings.saveToLocalStorage,
     userSettings.saveTime,
-    userSettings.ambientSounds,
+    userSettings.saveAmbinetSounds,
   ]);
 
   const handleLocalStorageToggle = () => {
@@ -32,25 +32,19 @@ const SettingsFocus = ({
       ...userSettings,
       saveToLocalStorage: !userSettings.saveToLocalStorage,
     });
-    localStorage.setItem("userSettings", JSON.stringify(userSettings));
   };
   const handleSaveTimeToggle = () => {
     setUserSettings({
       ...userSettings,
       saveTime: !userSettings.saveTime,
     });
-    localStorage.setItem("userSettings", JSON.stringify(userSettings));
   };
 
   const handleAmientSoundsToggle = () => {
-    // setUserSettings({
-    // ...userSettings,
-    // ambientSounds: {
-    //   ...userSettings.ambientSounds,
-    //   isMuted: !userSettings.ambientSounds.isMuted,
-    // },
-    // });
-    console.log(JSON.stringify(userSettings));
+    setUserSettings({
+      ...userSettings,
+      saveAmbinetSounds: !userSettings.saveAmbinetSounds,
+    });
   };
 
   return (
@@ -72,9 +66,13 @@ const SettingsFocus = ({
         {/* Data Storage */}
         <DataStorage
           userSettings={userSettings}
-          // setUserSettings={setUserSettings}
           handleLocalStorageToggle={handleLocalStorageToggle}
           handleSaveTimeToggle={handleSaveTimeToggle}
+        />
+        {/* Ambient Sounds */}
+        <Sounds
+          userSettings={userSettings}
+          handleAmbientSoundsToggle={handleAmientSoundsToggle}
         />
         {/* Navigation */}
         <Navigation />
@@ -179,7 +177,44 @@ const DataStorage = ({
   );
 };
 
-// const Sounds = ()
+const Sounds = ({
+  userSettings,
+  handleAmbientSoundsToggle,
+}: {
+  userSettings: UserSettings;
+  handleAmbientSoundsToggle: () => void;
+}) => {
+  return (
+    <div className="flex flex-col">
+      <h3 className="text-lg font-light">Ambient Sounds</h3>
+      <p className="text-xs px-1 text-muted-foreground">
+        Save your selected Ambient Sound for next session.
+        <i>(default: off)</i>
+      </p>
+      {/* Save Tasks */}
+      <div className="flex justify-between items-center py-3 px-1">
+        <Label htmlFor="save-tasks" className="flex items-center gap-4">
+          <Music4Icon />
+          <div className="flex flex-col">
+            <h4 className="text-sm font-medium">Save Sounds</h4>
+            <p className="text-xs text-muted-foreground">
+              Saving ambient sounds to play next time is{" "}
+              {userSettings.saveAmbinetSounds ? "enabled" : "disabled"}
+            </p>
+          </div>
+        </Label>
+        <div>
+          <Switch
+            className="cursor-pointer"
+            id="save-tasks"
+            checked={userSettings.saveAmbinetSounds}
+            onCheckedChange={handleAmbientSoundsToggle}
+          />
+        </div>
+      </div>
+    </div>
+  );
+};
 
 const Navigation = () => {
   const navigate = useNavigate();

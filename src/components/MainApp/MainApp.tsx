@@ -4,8 +4,48 @@ import Inspiration from "./Inspiration";
 import FocusNav from "./Navigation";
 import Tasks from "./Tasks";
 import { motion } from "motion/react";
-import type { Environment, TaskProps, UserSettings } from "@/types/types";
+import {
+  type AmbinetSounds,
+  type TaskProps,
+  type UserSettings,
+} from "@/types/types";
 import AmbientSounds from "./AmbientSounds";
+
+// Load UserSettings from localStorage on initialization
+const getInitialSettings = (): UserSettings => {
+  const savedSettings = localStorage.getItem("userSettings");
+  if (savedSettings) {
+    try {
+      return JSON.parse(savedSettings);
+    } catch (error) {
+      console.error("Error parsing saved settings:", error);
+    }
+  }
+  // Return defaults if nothing saved
+  return {
+    saveToLocalStorage: true,
+    saveTime: true,
+    saveAmbinetSounds: false,
+  };
+};
+
+// Load AmbientSounds from localStorage on initialization
+const getInitialAmbientSounds = (): AmbinetSounds => {
+  const saved = localStorage.getItem("fr-ambient_sounds");
+  if (saved) {
+    try {
+      return JSON.parse(saved);
+    } catch (error) {
+      console.error("Error parsing ambient sounds:", error);
+    }
+  }
+  // Return defaults if nothing saved
+  return {
+    environment: null,
+    isMuted: true,
+    volume: 50,
+  };
+};
 
 const MainApp = ({
   darkMode,
@@ -18,36 +58,27 @@ const MainApp = ({
     JSON.parse(localStorage.getItem("tasks") || "[]")
   );
 
-  const [userSettings, setUserSettings] = useState<UserSettings>({
-    saveToLocalStorage: true,
-    saveTime: true,
-    ambientSounds: {
-      isMuted: true,
-      environment: null,
-      volume: 50,
-    },
-  });
+  const [userSettings, setUserSettings] =
+    useState<UserSettings>(getInitialSettings);
 
-  // Load userSettings from localStorage
-  useEffect(() => {
-    const savedSettings = localStorage.getItem("userSettings");
-    if (savedSettings) {
-      setUserSettings(JSON.parse(savedSettings));
-    }
-  }, []);
+  // Initialize ambientSounds
+  const [ambientSounds, setAmbientSounds] = useState<AmbinetSounds>(
+    getInitialAmbientSounds
+  );
 
   // Save userSettings to localStorage whenever it changes
   useEffect(() => {
     localStorage.setItem("userSettings", JSON.stringify(userSettings));
   }, [userSettings]);
 
+  // Save ambient sounds ONLY when saveAmbinetSounds is enabled
   useEffect(() => {
-    if (userSettings.saveToLocalStorage) {
-      localStorage.setItem("tasks", JSON.stringify(tasks));
+    if (userSettings.saveAmbinetSounds) {
+      localStorage.setItem("fr-ambient_sounds", JSON.stringify(ambientSounds));
     } else {
-      localStorage.removeItem("tasks");
+      localStorage.removeItem("fr-ambient_sounds");
     }
-  }, [tasks, userSettings.saveToLocalStorage]);
+  }, [ambientSounds, userSettings.saveAmbinetSounds]);
 
   // FOCUS TIME AND IS RUNNING
   const savedTime = localStorage.getItem("time");
@@ -62,6 +93,15 @@ const MainApp = ({
       return () => clearInterval(timer);
     }
   }, [isRunning]);
+
+  // Saving to localStorage based on settings
+  useEffect(() => {
+    if (userSettings.saveToLocalStorage) {
+      localStorage.setItem("tasks", JSON.stringify(tasks));
+    } else {
+      localStorage.removeItem("tasks");
+    }
+  }, [tasks, userSettings.saveToLocalStorage]);
 
   useEffect(() => {
     if (userSettings.saveTime) {
@@ -123,8 +163,8 @@ const MainApp = ({
         </div>
       </div>
       <AmbientSounds
-        userSettings={userSettings}
-        setUserSettings={setUserSettings}
+        ambientSounds={ambientSounds}
+        setAmbientSounds={setAmbientSounds}
       />
     </section>
   );
