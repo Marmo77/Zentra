@@ -28,15 +28,18 @@ const MainApp = ({
     },
   });
 
-  // console.log(darkMode);
-
+  // Load userSettings from localStorage
   useEffect(() => {
-    if (localStorage.getItem("userSettings") === null) {
-      localStorage.setItem("userSettings", JSON.stringify(userSettings));
-    } else {
-      setUserSettings(JSON.parse(localStorage.getItem("userSettings") || "{}"));
+    const savedSettings = localStorage.getItem("userSettings");
+    if (savedSettings) {
+      setUserSettings(JSON.parse(savedSettings));
     }
   }, []);
+
+  // Save userSettings to localStorage whenever it changes
+  useEffect(() => {
+    localStorage.setItem("userSettings", JSON.stringify(userSettings));
+  }, [userSettings]);
 
   useEffect(() => {
     if (userSettings.saveToLocalStorage) {

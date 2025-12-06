@@ -20,6 +20,7 @@ type AmbientSoundsElementsProps = {
   label: string;
   color: string;
 };
+
 function AmbientSounds({
   userSettings,
   setUserSettings,
@@ -28,31 +29,37 @@ function AmbientSounds({
   setUserSettings: React.Dispatch<React.SetStateAction<UserSettings>>;
 }) {
   const [selectedSound, setSelectedSound] = useState<Environment>(
-    userSettings.ambientSounds.environment || null
+    userSettings.ambientSounds.environment
   );
-  const [isMuted, setIsMuted] = useState(
-    userSettings.ambientSounds.isMuted || false
-  );
+  const [isMuted, setIsMuted] = useState(userSettings.ambientSounds.isMuted);
   const [volume, setVolume] = useState<number[]>([
-    userSettings.ambientSounds.volume || 0,
+    userSettings.ambientSounds.volume,
   ]);
 
-  // load saved prefrences (user settings)
-
-  // save prefrences
+  // Sync local state when userSettings prop changes
   useEffect(() => {
-    // const saved = userSettings.ambientSounds;
-    setUserSettings({
-      ...userSettings,
+    setSelectedSound(userSettings.ambientSounds.environment);
+    setIsMuted(userSettings.ambientSounds.isMuted);
+    setVolume([userSettings.ambientSounds.volume]);
+  }, [
+    userSettings.ambientSounds.environment,
+    userSettings.ambientSounds.isMuted,
+    userSettings.ambientSounds.volume,
+  ]);
+
+  // Save local state changes to parent
+  useEffect(() => {
+    setUserSettings((prev) => ({
+      ...prev,
       ambientSounds: {
         environment: selectedSound,
         volume: volume[0],
         isMuted: isMuted,
       },
-    });
-  }, [selectedSound, volume, isMuted, userSettings.ambientSounds.environment]);
+    }));
+  }, [selectedSound, volume, isMuted, setUserSettings]);
 
-  const AmbietSoundsElements: AmbientSoundsElementsProps[] = [
+  const AmbientSoundsElements: AmbientSoundsElementsProps[] = [
     { id: "rain", icon: CloudRainWind, label: "Rain", color: "#7dd3fc" },
     { id: "forest", icon: Trees, label: "Forest", color: "#4ade80" },
     { id: "night", icon: Moon, label: "Night", color: "#a78bfa" },
@@ -63,11 +70,13 @@ function AmbientSounds({
   const ToggleEnvironment = (elem: Environment) => {
     if (selectedSound === elem) {
       setSelectedSound(null);
-      setIsMuted(false);
+      setIsMuted(true);
     } else {
       setSelectedSound(elem);
+      setIsMuted(false);
     }
   };
+
   const toggleMuted = () => {
     const newMutedState = !isMuted;
     setIsMuted(newMutedState);
@@ -77,13 +86,11 @@ function AmbientSounds({
       // play sound
     }
   };
-  // check if volume is on/off if off then toast that user needs to select sound
 
   const checkMuted = () => {
     if (!selectedSound) {
       toast.info("Please select sound", {
         richColors: true,
-
         duration: 3000,
         dismissible: true,
       });
@@ -102,8 +109,8 @@ function AmbientSounds({
         {/* Ambient Sounds */}
         <div className="w-full flex-4 flex gap-4 items-center">
           <h1 className="text-base font-light">Ambient Sounds</h1>
-          <div className="flex gap-4 ">
-            {AmbietSoundsElements.map((elem) => {
+          <div className="flex gap-4">
+            {AmbientSoundsElements.map((elem) => {
               const Icon = elem.icon;
               const isActive = selectedSound === elem.id;
               return (
@@ -129,7 +136,7 @@ function AmbientSounds({
         {/* Volume settings */}
         <div className="flex items-center gap-3">
           <div
-            className="hidden md:flex items-center gap-2 w-32"
+            className="hidden md:flex items-center gap-2 w-32 cursor-pointer"
             onClick={checkMuted}
           >
             <Slider
