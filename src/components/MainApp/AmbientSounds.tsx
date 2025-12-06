@@ -33,7 +33,7 @@ function AmbientSounds({
     { id: "forest", icon: Trees, label: "Forest", color: "#4ade80" },
     { id: "night", icon: Moon, label: "Night", color: "#a78bfa" },
     { id: "cafe", icon: Coffee, label: "Café", color: "#fb923c" },
-    { id: "ocean", icon: Waves, label: "Ocean", color: "#38bdf8" },
+    { id: "water", icon: Waves, label: "Water", color: "#38bdf8" },
   ];
 
   const toggleEnvironment = (elem: Environment) => {

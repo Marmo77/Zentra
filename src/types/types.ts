@@ -3,7 +3,7 @@ export type TaskProps = {
   task: string;
   isCompleted: boolean;
 };
-export type Environment = "rain" | "forest" | "night" | "cafe" | "ocean" | null;
+export type Environment = "rain" | "forest" | "night" | "cafe" | "water" | null;
 
 export type UserSettings = {
   saveToLocalStorage: boolean;
